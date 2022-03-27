@@ -12,6 +12,7 @@ module.exports = {
         // Simple 16 column grid
         '2': 'repeat(2, minmax(0, 1fr))',
         '4': 'repeat(4, minmax(0, 1fr))',
+        '1': 'repeat(1, minmax(0, 1fr))',
       }
     },
   },

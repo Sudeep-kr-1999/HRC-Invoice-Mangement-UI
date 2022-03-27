@@ -22,7 +22,6 @@ function ButtonField() {
   };
 
   const addFunction = () => {
-    console.log("adding details");
     setdialogType("Add");
     const dialogElemententry = [
       { field: "Business Code", type: "text" },
@@ -46,7 +45,6 @@ function ButtonField() {
   };
 
   const editFunction = () => {
-    console.log("editing details");
     setdialogType("Edit");
     const dialogElemententry = [
       { field: "Invoice Currency", type: "text" },
@@ -57,7 +55,14 @@ function ButtonField() {
   };
 
   const deleteFunction = () => {
-    console.log("deleting details");
+    const dialogElemententry = [
+      {
+        field: "Are you sure you want to delete these record[s]?"
+      },
+    ];
+    setdialogType("Delete Records ?");
+    setdialogElement(dialogElemententry);
+    displayState.changeDisplay("flex");
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">
