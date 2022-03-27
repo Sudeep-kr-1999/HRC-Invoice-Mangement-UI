@@ -42,8 +42,8 @@ function DataGridComponent() {
         pagination
         sx={{
           color: "white",
-          border:"none",
-          backgroundColor:"#283d4a",
+          border: "none",
+          backgroundColor: "#283d4a",
         }}
       />
     </div>
