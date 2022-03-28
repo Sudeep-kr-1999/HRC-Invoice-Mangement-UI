@@ -4,13 +4,20 @@ import SearchField from "./SearchField";
 import ButtonComponent from "./ButtonComponent";
 import DialogComponent from "./DialogComponent";
 import { DialogDisplayContext } from "./StateProvider";
-function ButtonField() {
-  const [dialogType, setdialogType] = useState("");
-  const [dialogElement, setdialogElement] = useState([]);
-  const displayState = useContext(DialogDisplayContext);
 
+function ButtonField() {
+  // state "dialogHeading" for passing to the dialogName props in DialogComponent
+  const [dialogHeading, setdialogHeading] = useState("");
+
+  // state "dialogElement" for passing to dialogElement props in DialogComponent
+  const [dialogElement, setdialogElement] = useState([]);
+
+  // changeDisplay function for handling dialog display using DialogDisplayContext
+  const { changeDisplay } = useContext(DialogDisplayContext);
+
+  // function for "ADVANCE SEARCH" button
   const advanceSearchFunction = () => {
-    setdialogType("Advance Search");
+    setdialogHeading("Advance Search");
     const dialogElemententry = [
       { field: "Document ID", type: "text" },
       { field: "Invoice Id", type: "text" },
@@ -18,11 +25,12 @@ function ButtonField() {
       { field: "Business Year", type: "text" },
     ];
     setdialogElement(dialogElemententry);
-    displayState.changeDisplay("flex");
+    changeDisplay("flex");
   };
 
+  // function for "ADD" button
   const addFunction = () => {
-    setdialogType("Add");
+    setdialogHeading("Add");
     const dialogElemententry = [
       { field: "Business Code", type: "text" },
       { field: "Customer Number", type: "text" },
@@ -41,32 +49,35 @@ function ButtonField() {
       { field: "Invoice id", type: "text" },
     ];
     setdialogElement(dialogElemententry);
-    displayState.changeDisplay("flex");
+    changeDisplay("flex");
   };
 
+  // function for "EDIT" button
   const editFunction = () => {
-    setdialogType("Edit");
+    setdialogHeading("Edit");
     const dialogElemententry = [
       { field: "Invoice Currency", type: "text" },
       { field: "Customer Payment Terms", type: "text" },
     ];
     setdialogElement(dialogElemententry);
-    displayState.changeDisplay("flex");
+    changeDisplay("flex");
   };
 
+  // function for "DELETE" button
   const deleteFunction = () => {
     const dialogElemententry = [
       {
-        field: "Are you sure you want to delete these record[s]?"
+        field: "Are you sure you want to delete these record[s] ?",
       },
     ];
-    setdialogType("Delete Records ?");
+    setdialogHeading("Delete Records ?");
     setdialogElement(dialogElemententry);
-    displayState.changeDisplay("flex");
+    changeDisplay("flex");
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">
       <div className="relative flex flex-1 justify-center items-center">
+        {/* LEFT BUTTON GROUP  */}
         <ButtonGroup
           fullWidth
           sx={{ position: "relative", display: "flex", flex: "1" }}
@@ -79,11 +90,14 @@ function ButtonField() {
           />
         </ButtonGroup>
       </div>
+
+      {/* SEARCH FIELD  */}
       <div className="relative flex flex-1 justify-center items-center">
         <SearchField label="Search Customer ID" />
       </div>
 
       <div className="relative flex flex-1 justify-center items-center">
+        {/* RIGHT BUTTON GROUP  */}
         <ButtonGroup
           fullWidth
           sx={{ position: "relative", display: "flex", flex: "1" }}
@@ -93,7 +107,12 @@ function ButtonField() {
           <ButtonComponent name="DELETE" workingFunction={deleteFunction} />
         </ButtonGroup>
       </div>
-      <DialogComponent dialogName={dialogType} dialogElement={dialogElement} />
+
+      {/* DYNAMIC DIALOG COMPONENT  */}
+      <DialogComponent
+        dialogName={dialogHeading}
+        dialogElement={dialogElement}
+      />
     </div>
   );
 }

@@ -2,6 +2,8 @@ import React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 
 function DataGridComponent() {
+
+  // columns for datagrid 
   const columns = [
     { field: "sl_no", headerName: "Sl no", flex: 1 },
     { field: "business_code", headerName: "Business Code", flex: 1 },

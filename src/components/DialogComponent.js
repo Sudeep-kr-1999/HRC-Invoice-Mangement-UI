@@ -8,9 +8,16 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { DialogDisplayContext } from "./StateProvider";
 
 function DialogComponent({ dialogName, dialogElement }) {
+  // using DialogDisplayContext
   const displayObject = useContext(DialogDisplayContext);
+
+  // variable "actionType" for defining working of buttons
   let actionType = "";
+
+  // variable "grid_col_value_class" for defining grid for particular actionType
   let grid_col_value_class = "";
+
+  // Checking type of Dialog for by "dialogName" prop
   if (dialogName === "Add") {
     grid_col_value_class = "relative grid grid-cols-4";
     actionType = "ADD";
@@ -25,8 +32,8 @@ function DialogComponent({ dialogName, dialogElement }) {
     actionType = "DELETE";
   }
 
+  // Cancel Button Function
   const cancelFunction = () => {
-    console.log("cancel clicked");
     displayObject.changeDisplay("none");
   };
   return (
@@ -34,7 +41,7 @@ function DialogComponent({ dialogName, dialogElement }) {
       className="fixed top-0 left-0 h-screen w-screen items-center justify-center z-10"
       style={{ display: `${displayObject.display}` }}
     >
-      <div className="relative border h-auto w-fit m-10 p-5 flex flex-col rounded-md bg-grid">
+      <div className="relative border h-auto w-auto m-10 p-5 flex flex-col rounded-md bg-grid">
         <div className="relative text-white m-5 text-2xl">{dialogName}</div>
         <div className={`${grid_col_value_class}`}>
           {actionType !== "DELETE"
