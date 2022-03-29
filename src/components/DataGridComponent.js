@@ -48,7 +48,7 @@ function DataGridComponent() {
   }, [pageNo]);
 
   return (
-    <div className="relative flex-1 mt-0 mb-10 px-5 h-full w-full bg-grid border-cyan-900">
+    <div className="relative flex flex-1 h-full w-full mt-0 mb-10 px-5 bg-grid border-cyan-900">
       <DataGrid
         columns={columns}
         checkboxSelection
@@ -61,12 +61,10 @@ function DataGridComponent() {
         paginationMode="server"
         rowCount={500}
         sx={{
-          display: "flex",
           color: "white",
           border: "none",
           width: 1,
           backgroundColor: "#283d4a",
-          justifyContent: "space-evenly",
         }}
       />
     </div>
