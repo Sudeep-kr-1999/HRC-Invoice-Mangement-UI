@@ -7,6 +7,7 @@ function ButtonComponent({ name, workingFunction, state }) {
       disabled={state}
       sx={{
         color: "white",
+        borderColor: "#14aff1",
         ":hover": { backgroundColor: "#14aff1" },
         position: "relative",
         display: "flex",
