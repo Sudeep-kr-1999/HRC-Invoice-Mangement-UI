@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import API from "../axios";
 
 function DataGridComponent() {
+  console.log("datagrid");
+  const [displayRows, setdisplayRows] = useState([]);
+  const [pageNo, setpageNo] = useState(1);
 
-  // columns for datagrid 
+  // columns for datagrid
   const columns = [
     { field: "sl_no", headerName: "Sl no", flex: 1 },
     { field: "business_code", headerName: "Business Code", flex: 1 },
@@ -35,21 +39,38 @@ function DataGridComponent() {
     { field: "invoice_id", headerName: "Invoice Id", flex: 1 },
   ];
 
+  useEffect(() => {
+    API.get(`GetAllUiDetails?page=${pageNo}`).then((response) => {
+      if (response.status === 200) {
+        setdisplayRows(response.data);
+      }
+    });
+  }, [pageNo]);
+
   return (
-    <div className="relative flex-1 mt-0 mb-10 px-5 bg-grid border-cyan-900">
+    <div className="relative flex-1 mt-0 mb-10 px-5 h-full w-full bg-grid border-cyan-900">
       <DataGrid
         columns={columns}
         checkboxSelection
+        rows={displayRows}
         pageSize={10}
-        pagination
+        aria-label="string"
+        getRowId={(row) => row.sl_no}
+        autoHeight
+        disableExtendRowFullWidth={false}
+        paginationMode="server"
+        rowCount={500}
         sx={{
+          display: "flex",
           color: "white",
           border: "none",
+          width: 1,
           backgroundColor: "#283d4a",
+          justifyContent: "space-evenly",
         }}
       />
     </div>
   );
 }
 
-export default DataGridComponent;
+export default React.memo(DataGridComponent);

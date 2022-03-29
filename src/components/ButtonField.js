@@ -6,14 +6,20 @@ import DialogComponent from "./DialogComponent";
 import { DialogDisplayContext } from "./StateProvider";
 
 function ButtonField() {
+  console.log("buttonfield");
   // state "dialogHeading" for passing to the dialogName props in DialogComponent
   const [dialogHeading, setdialogHeading] = useState("");
 
   // state "dialogElement" for passing to dialogElement props in DialogComponent
   const [dialogElement, setdialogElement] = useState([]);
 
-  // changeDisplay function for handling dialog display using DialogDisplayContext
-  const { changeDisplay } = useContext(DialogDisplayContext);
+  // changeDialogDisplay function for handling dialog display using DialogDisplayContext
+  const {
+    changeDialogDisplay,
+    editButtonDisableStatus,
+    deleteButtonDisableStatus,
+    predictButtonDisableStatus,
+  } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
   const advanceSearchFunction = () => {
@@ -25,7 +31,7 @@ function ButtonField() {
       { field: "Business Year", type: "text" },
     ];
     setdialogElement(dialogElemententry);
-    changeDisplay("flex");
+    changeDialogDisplay("flex");
   };
 
   // function for "ADD" button
@@ -49,7 +55,7 @@ function ButtonField() {
       { field: "Invoice id", type: "text" },
     ];
     setdialogElement(dialogElemententry);
-    changeDisplay("flex");
+    changeDialogDisplay("flex");
   };
 
   // function for "EDIT" button
@@ -60,7 +66,7 @@ function ButtonField() {
       { field: "Customer Payment Terms", type: "text" },
     ];
     setdialogElement(dialogElemententry);
-    changeDisplay("flex");
+    changeDialogDisplay("flex");
   };
 
   // function for "DELETE" button
@@ -72,7 +78,7 @@ function ButtonField() {
     ];
     setdialogHeading("Delete Records ?");
     setdialogElement(dialogElemententry);
-    changeDisplay("flex");
+    changeDialogDisplay("flex");
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">
@@ -82,7 +88,7 @@ function ButtonField() {
           fullWidth
           sx={{ position: "relative", display: "flex", flex: "1" }}
         >
-          <ButtonComponent name="PREDICT" />
+          <ButtonComponent name="PREDICT" state={predictButtonDisableStatus} />
           <ButtonComponent name="ANALYTICS VIEW" />
           <ButtonComponent
             name="ADVANCE SEARCH"
@@ -103,8 +109,16 @@ function ButtonField() {
           sx={{ position: "relative", display: "flex", flex: "1" }}
         >
           <ButtonComponent name="ADD" workingFunction={addFunction} />
-          <ButtonComponent name="EDIT" workingFunction={editFunction} />
-          <ButtonComponent name="DELETE" workingFunction={deleteFunction} />
+          <ButtonComponent
+            name="EDIT"
+            workingFunction={editFunction}
+            state={editButtonDisableStatus}
+          />
+          <ButtonComponent
+            name="DELETE"
+            workingFunction={deleteFunction}
+            state={deleteButtonDisableStatus}
+          />
         </ButtonGroup>
       </div>
 
@@ -117,4 +131,4 @@ function ButtonField() {
   );
 }
 
-export default ButtonField;
+export default React.memo(ButtonField);

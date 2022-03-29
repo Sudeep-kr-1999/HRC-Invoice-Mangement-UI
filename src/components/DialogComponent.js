@@ -8,8 +8,9 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import { DialogDisplayContext } from "./StateProvider";
 
 function DialogComponent({ dialogName, dialogElement }) {
+  console.log("dialogcomponent");
   // using DialogDisplayContext
-  const displayObject = useContext(DialogDisplayContext);
+  const { dialogDisplay,changeDialogDisplay } = useContext(DialogDisplayContext);
 
   // variable "actionType" for defining working of buttons
   let actionType = "";
@@ -34,12 +35,12 @@ function DialogComponent({ dialogName, dialogElement }) {
 
   // Cancel Button Function
   const cancelFunction = () => {
-    displayObject.changeDisplay("none");
+    changeDialogDisplay("none");
   };
   return (
     <div
       className="fixed top-0 left-0 h-screen w-screen items-center justify-center z-10"
-      style={{ display: `${displayObject.display}` }}
+      style={{ display: `${dialogDisplay}` }}
     >
       <div className="relative border h-auto w-auto m-10 p-5 flex flex-col rounded-md bg-grid">
         <div className="relative text-white m-5 text-2xl">{dialogName}</div>
@@ -127,4 +128,4 @@ function DialogComponent({ dialogName, dialogElement }) {
   );
 }
 
-export default DialogComponent;
+export default React.memo(DialogComponent);
