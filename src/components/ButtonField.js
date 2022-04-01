@@ -19,6 +19,7 @@ function ButtonField() {
     editButtonDisableStatus,
     deleteButtonDisableStatus,
     predictButtonDisableStatus,
+    dialogBoxPassingData,
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -67,8 +68,8 @@ function ButtonField() {
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
+    console.log(dialogBoxPassingData);
   };
-
   // function for "DELETE" button
   const deleteFunction = () => {
     const dialogElemententry = [
@@ -79,6 +80,7 @@ function ButtonField() {
     setdialogHeading("Delete Records ?");
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
+    console.log(dialogBoxPassingData);
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">

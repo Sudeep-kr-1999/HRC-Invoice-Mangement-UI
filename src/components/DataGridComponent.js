@@ -7,13 +7,13 @@ function DataGridComponent() {
   console.log("datagrid");
   const [displayRows, setdisplayRows] = useState([]);
   const [pageNo, setpageNo] = useState(1);
-  const [passingData, setpassingData] = useState([]);
   const {
     countTotalData,
     changeCountTotalData,
     changeeditButtonDisableStatus,
     changeDeleteButtonDisableStatus,
     changepredictButtonDisableStatus,
+    changeDialogBoxPassingData,
   } = useContext(DialogDisplayContext);
 
   // columns for datagrid
@@ -69,8 +69,11 @@ function DataGridComponent() {
     [countTotalData]
   );
 
-  const handleButtonStatus = (length) => {
-    console.log(length);
+  const handleButtonStatus = (item) => {
+    let length = item.length;
+    changeDialogBoxPassingData(item);
+
+    console.log(item);
     {
       if (length > 0) {
         if (length > 1) {
@@ -111,7 +114,7 @@ function DataGridComponent() {
         onPageChange={(newPage) => {
           setpageNo(newPage + 1);
         }}
-        onSelectionModelChange={(item) => handleButtonStatus(item.length)}
+        onSelectionModelChange={(item) => handleButtonStatus(item)}
         sx={{
           color: "white",
           border: "none",

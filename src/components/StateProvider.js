@@ -11,6 +11,7 @@ function StateProvider({ children }) {
     useState(true);
 
   const [countTotalData, setcountTotalData] = useState(0);
+  const [dialogBoxPassingData, setdialogBoxPassingData] = useState([]);
 
   const changeCountTotalData = (newCount) => {
     setcountTotalData(newCount);
@@ -28,6 +29,10 @@ function StateProvider({ children }) {
   const changepredictButtonDisableStatus = (newStatus) => {
     setpredictButtonDisableStatus(newStatus);
   };
+
+  const changeDialogBoxPassingData = (data) => {
+    setdialogBoxPassingData(data);
+  };
   return (
     <DialogDisplayContext.Provider
       value={{
@@ -41,6 +46,8 @@ function StateProvider({ children }) {
         changepredictButtonDisableStatus,
         countTotalData,
         changeCountTotalData,
+        dialogBoxPassingData,
+        changeDialogBoxPassingData,
       }}
     >
       {children}

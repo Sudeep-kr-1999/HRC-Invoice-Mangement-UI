@@ -10,7 +10,8 @@ import { DialogDisplayContext } from "./StateProvider";
 function DialogComponent({ dialogName, dialogElement }) {
   console.log("dialogcomponent");
   // using DialogDisplayContext
-  const { dialogDisplay,changeDialogDisplay } = useContext(DialogDisplayContext);
+  const { dialogDisplay, changeDialogDisplay } =
+    useContext(DialogDisplayContext);
 
   // variable "actionType" for defining working of buttons
   let actionType = "";
@@ -36,6 +37,21 @@ function DialogComponent({ dialogName, dialogElement }) {
   // Cancel Button Function
   const cancelFunction = () => {
     changeDialogDisplay("none");
+  };
+
+  const addFunction = () => {
+    console.log("addfunction");
+  };
+
+  const editFunction = () => {
+    console.log("editfunction");
+  };
+
+  const deleteFunction = () => {
+    console.log("deletefunction");
+  };
+  const searchFunction = () => {
+    console.log("searchfunction");
   };
   return (
     <div
@@ -110,7 +126,24 @@ function DialogComponent({ dialogName, dialogElement }) {
               fullWidth
               sx={{ position: "relative", display: "flex", flex: "1" }}
             >
-              <ButtonComponent name={actionType} />
+              {actionType === "ADD" ? (
+                <ButtonComponent
+                  name={actionType}
+                  workingFunction={addFunction}
+                />
+              ) : actionType === "EDIT" ? (
+                <ButtonComponent
+                  name={actionType}
+                  workingFunction={editFunction}
+                />
+              ) : (
+                actionType === "SEARCH" && (
+                  <ButtonComponent
+                    name={actionType}
+                    workingFunction={searchFunction}
+                  />
+                )
+              )}
               <ButtonComponent name="CANCEL" workingFunction={cancelFunction} />
             </ButtonGroup>
           ) : (
@@ -119,7 +152,10 @@ function DialogComponent({ dialogName, dialogElement }) {
               sx={{ position: "relative", display: "flex", flex: "1" }}
             >
               <ButtonComponent name="CANCEL" workingFunction={cancelFunction} />
-              <ButtonComponent name={actionType} />
+              <ButtonComponent
+                name={actionType}
+                workingFunction={deleteFunction}
+              />
             </ButtonGroup>
           )}
         </div>
