@@ -1,11 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import API from "../axios";
+import { DialogDisplayContext } from "./StateProvider";
 
 function DataGridComponent() {
   console.log("datagrid");
   const [displayRows, setdisplayRows] = useState([]);
   const [pageNo, setpageNo] = useState(1);
+  const [passingData, setpassingData] = useState([]);
+  const {
+    countTotalData,
+    changeCountTotalData,
+    changeeditButtonDisableStatus,
+    changeDeleteButtonDisableStatus,
+    changepredictButtonDisableStatus,
+  } = useContext(DialogDisplayContext);
 
   // columns for datagrid
   const columns = [
@@ -39,14 +48,51 @@ function DataGridComponent() {
     { field: "invoice_id", headerName: "Invoice Id", flex: 1 },
   ];
 
-  useEffect(() => {
-    API.get(`GetAllUiDetails?page=${pageNo}`).then((response) => {
-      if (response.status === 200) {
-        setdisplayRows(response.data);
-      }
-    });
-  }, [pageNo]);
+  const getAllUiDetails = useCallback(
+    () =>
+      API.get(`GetAllUiDetails?page=${pageNo}`)
+        .then((response) => {
+          response.status === 200 && setdisplayRows(response.data);
+        })
+        .catch((error) => console.log("Some Error Occured")),
+    [pageNo]
+  );
 
+  const getCountUiDetails = useCallback(
+    () =>
+      API.get(`GetCountUIDetails`)
+        .then((response) => {
+          response.status === 200 &&
+            changeCountTotalData(response.data.totalcount);
+        })
+        .catch((error) => console.log("Some Error Occured")),
+    [countTotalData]
+  );
+
+  const handleButtonStatus = (length) => {
+    console.log(length);
+    {
+      if (length > 0) {
+        if (length > 1) {
+          changepredictButtonDisableStatus(false);
+          changeDeleteButtonDisableStatus(false);
+          changeeditButtonDisableStatus(true);
+        } else {
+          changeeditButtonDisableStatus(false);
+          changepredictButtonDisableStatus(false);
+          changeDeleteButtonDisableStatus(false);
+        }
+      } else {
+        changeeditButtonDisableStatus(true);
+        changepredictButtonDisableStatus(true);
+        changeDeleteButtonDisableStatus(true);
+      }
+    }
+  };
+  useEffect(() => {
+    getAllUiDetails();
+    getCountUiDetails();
+  }, [pageNo]);
   return (
     <div className="relative flex flex-1 h-full w-full mt-0 mb-10 px-5 bg-grid border-cyan-900">
       <DataGrid
@@ -54,12 +100,18 @@ function DataGridComponent() {
         checkboxSelection
         rows={displayRows}
         pageSize={10}
+        rowsPerPageOptions={[10]}
         aria-label="string"
         getRowId={(row) => row.sl_no}
         autoHeight
         disableExtendRowFullWidth={false}
         paginationMode="server"
-        rowCount={500}
+        pagination
+        rowCount={countTotalData}
+        onPageChange={(newPage) => {
+          setpageNo(newPage + 1);
+        }}
+        onSelectionModelChange={(item) => handleButtonStatus(item.length)}
         sx={{
           color: "white",
           border: "none",

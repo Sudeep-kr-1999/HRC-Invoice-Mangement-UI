@@ -1,1 +1,7 @@
-
+.css-levciy-MuiTablePagination-displayedRows {
+  color: white;
+}
+.css-11bfvty-MuiToolbar-root-MuiTablePagination-toolbar
+  .MuiTablePagination-actions {
+  color: white;
+}

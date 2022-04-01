@@ -5,10 +5,16 @@ function StateProvider({ children }) {
   console.log("state provider");
   const [dialogDisplay, setdialogDisplay] = useState("none");
   const [editButtonDisableStatus, seteditButtonDisableStatus] = useState(true);
-  const [deleteButtonDisableStatus, setDeleteButtonStatus] = useState(true);
+  const [deleteButtonDisableStatus, setDeleteButtonDisableStatus] =
+    useState(true);
   const [predictButtonDisableStatus, setpredictButtonDisableStatus] =
     useState(true);
 
+  const [countTotalData, setcountTotalData] = useState(0);
+
+  const changeCountTotalData = (newCount) => {
+    setcountTotalData(newCount);
+  };
   const changeDialogDisplay = (newDisplay) => {
     setdialogDisplay(newDisplay);
   };
@@ -16,13 +22,12 @@ function StateProvider({ children }) {
   const changeeditButtonDisableStatus = (newStatus) => {
     seteditButtonDisableStatus(newStatus);
   };
-  const changeDeleteButtonStatus = (newStatus) => {
-    setDeleteButtonStatus(newStatus);
+  const changeDeleteButtonDisableStatus = (newStatus) => {
+    setDeleteButtonDisableStatus(newStatus);
   };
   const changepredictButtonDisableStatus = (newStatus) => {
     setpredictButtonDisableStatus(newStatus);
   };
-
   return (
     <DialogDisplayContext.Provider
       value={{
@@ -31,9 +36,11 @@ function StateProvider({ children }) {
         editButtonDisableStatus,
         changeeditButtonDisableStatus,
         deleteButtonDisableStatus,
-        changeDeleteButtonStatus,
+        changeDeleteButtonDisableStatus,
         predictButtonDisableStatus,
         changepredictButtonDisableStatus,
+        countTotalData,
+        changeCountTotalData,
       }}
     >
       {children}
