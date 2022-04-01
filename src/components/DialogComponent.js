@@ -9,17 +9,13 @@ import { DialogDisplayContext } from "./StateProvider";
 
 function DialogComponent({ dialogName, dialogElement }) {
   console.log("dialogcomponent");
-  // using DialogDisplayContext
   const { dialogDisplay, changeDialogDisplay } =
     useContext(DialogDisplayContext);
 
-  // variable "actionType" for defining working of buttons
   let actionType = "";
 
-  // variable "grid_col_value_class" for defining grid for particular actionType
   let grid_col_value_class = "";
 
-  // Checking type of Dialog for by "dialogName" prop
   if (dialogName === "Add") {
     grid_col_value_class = "relative grid grid-cols-4";
     actionType = "ADD";
@@ -34,7 +30,6 @@ function DialogComponent({ dialogName, dialogElement }) {
     actionType = "DELETE";
   }
 
-  // Cancel Button Function
   const cancelFunction = () => {
     changeDialogDisplay("none");
   };
