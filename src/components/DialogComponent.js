@@ -1,16 +1,24 @@
 import { TextField } from "@mui/material";
-import React, { useContext } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
 import ButtonComponent from "./ButtonComponent";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { DialogDisplayContext } from "./StateProvider";
+import API from "../axios";
 
 function DialogComponent({ dialogName, dialogElement }) {
+  const [apiBody, setapiBody] = useState({});
   console.log("dialogcomponent");
-  const { dialogDisplay, changeDialogDisplay } =
-    useContext(DialogDisplayContext);
+  const {
+    dialogDisplay,
+    changeDialogDisplay,
+    dialogBoxPassingData,
+    changeDialogBoxPassingData,
+    searchData,
+    changeSearchData,
+  } = useContext(DialogDisplayContext);
 
   let actionType = "";
 
@@ -32,22 +40,27 @@ function DialogComponent({ dialogName, dialogElement }) {
 
   const cancelFunction = () => {
     changeDialogDisplay("none");
+    changeDialogBoxPassingData([]);
   };
 
-  const addFunction = () => {
+  const addFunction = useCallback(() => {
     console.log("addfunction");
-  };
+  }, [apiBody]);
 
-  const editFunction = () => {
+  const editFunction = useCallback(() => {
     console.log("editfunction");
-  };
+    console.log(dialogBoxPassingData);
+    changeDialogBoxPassingData([]);
+  }, [apiBody]);
 
-  const deleteFunction = () => {
-    console.log("deletefunction");
-  };
-  const searchFunction = () => {
+  const deleteFunction = useCallback(() => {
+    console.log(dialogBoxPassingData);
+    changeDialogBoxPassingData([]);
+  }, [dialogBoxPassingData]);
+  const searchFunction = useCallback(() => {
     console.log("searchfunction");
-  };
+  }, [apiBody]);
+
   return (
     <div
       className="fixed top-0 left-0 h-screen w-screen items-center justify-center z-10"
@@ -62,9 +75,17 @@ function DialogComponent({ dialogName, dialogElement }) {
                   <TextField
                     InputProps={{ disableUnderline: true }}
                     key={index}
+                    name={element.name}
                     label={element.field}
                     type={element.type}
                     variant="standard"
+                    value={apiBody[element.name]}
+                    onChange={(e) =>
+                      setapiBody((previousState) => ({
+                        ...previousState,
+                        [e.target.name]: e.target.value,
+                      }))
+                    }
                     required
                     sx={{
                       backgroundColor: "white",
@@ -81,11 +102,14 @@ function DialogComponent({ dialogName, dialogElement }) {
                   >
                     <DatePicker
                       label={element.field}
+                      name={element.name}
                       views={["year", "month", "day"]}
                       renderInput={(params) => (
                         <TextField
+                          name={element.name}
                           InputProps={{ disableUnderline: true }}
                           required
+                          value={apiBody[element.name]}
                           {...params}
                           variant="standard"
                           sx={{

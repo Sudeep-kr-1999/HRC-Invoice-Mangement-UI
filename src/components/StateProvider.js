@@ -9,10 +9,13 @@ function StateProvider({ children }) {
     useState(true);
   const [predictButtonDisableStatus, setpredictButtonDisableStatus] =
     useState(true);
-
   const [countTotalData, setcountTotalData] = useState(0);
   const [dialogBoxPassingData, setdialogBoxPassingData] = useState([]);
+  const [searchData, setsearchData] = useState([]);
 
+  const changeSearchData = (newData) => {
+    setsearchData(newData);
+  };
   const changeCountTotalData = (newCount) => {
     setcountTotalData(newCount);
   };
@@ -48,6 +51,8 @@ function StateProvider({ children }) {
         changeCountTotalData,
         dialogBoxPassingData,
         changeDialogBoxPassingData,
+        searchData,
+        changeSearchData,
       }}
     >
       {children}

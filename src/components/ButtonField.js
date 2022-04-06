@@ -26,10 +26,10 @@ function ButtonField() {
   const advanceSearchFunction = () => {
     setdialogHeading("Advance Search");
     const dialogElemententry = [
-      { field: "Document ID", type: "text" },
-      { field: "Invoice Id", type: "text" },
-      { field: "Customer Number", type: "text" },
-      { field: "Business Year", type: "text" },
+      { field: "Document ID", type: "text", name: "doc_id" },
+      { field: "Invoice Id", type: "text", name: "invoice_id" },
+      { field: "Customer Number", type: "text", name: "customer_number" },
+      { field: "Business Year", type: "text", name: "business_year" },
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
@@ -39,21 +39,33 @@ function ButtonField() {
   const addFunction = () => {
     setdialogHeading("Add");
     const dialogElemententry = [
-      { field: "Business Code", type: "text" },
-      { field: "Customer Number", type: "text" },
-      { field: "Clear Date", type: "date" },
-      { field: "Business Year", type: "text" },
-      { field: "Document id", type: "text" },
-      { field: "Posting Date", type: "date" },
-      { field: "Document Create Date", type: "date" },
-      { field: "Due Date", type: "date" },
-      { field: "Invoice Currency", type: "text" },
-      { field: "Document type", type: "text" },
-      { field: "Posting Id", type: "text" },
-      { field: "Total open amount", type: "text" },
-      { field: "Baseline Create Date", type: "date" },
-      { field: "Customer Payment Terms", type: "text" },
-      { field: "Invoice id", type: "text" },
+      { field: "Business Code", type: "text", name: "business_code" },
+      { field: "Customer Number", type: "text", name: "cust_number" },
+      { field: "Clear Date", type: "date", name: "clear_date" },
+      { field: "Business Year", type: "text", name: "business_year" },
+      { field: "Document id", type: "text", name: "doc_id" },
+      { field: "Posting Date", type: "date", name: "posting_date" },
+      {
+        field: "Document Create Date",
+        type: "date",
+        name: "document_create_date",
+      },
+      { field: "Due Date", type: "date", name: "due_in_date" },
+      { field: "Invoice Currency", type: "text", name: "invoice_currency" },
+      { field: "Document type", type: "text", name: "document_type" },
+      { field: "Posting Id", type: "text", name: "posting_id" },
+      { field: "Total open amount", type: "text", name: "total_open_amount" },
+      {
+        field: "Baseline Create Date",
+        type: "date",
+        name: "baseline_create_date",
+      },
+      {
+        field: "Customer Payment Terms",
+        type: "text",
+        name: "cust_payment_terms",
+      },
+      { field: "Invoice id", type: "text", name: "invoice_id" },
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
@@ -63,8 +75,12 @@ function ButtonField() {
   const editFunction = () => {
     setdialogHeading("Edit");
     const dialogElemententry = [
-      { field: "Invoice Currency", type: "text" },
-      { field: "Customer Payment Terms", type: "text" },
+      { field: "Invoice Currency", type: "text", name: "new_invoice_currency" },
+      {
+        field: "Customer Payment Terms",
+        type: "text",
+        name: "new_cust_payment_terms",
+      },
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");

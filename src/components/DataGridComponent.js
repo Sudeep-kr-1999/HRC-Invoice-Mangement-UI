@@ -72,8 +72,6 @@ function DataGridComponent() {
   const handleButtonStatus = (item) => {
     let length = item.length;
     changeDialogBoxPassingData(item);
-
-    console.log(item);
     {
       if (length > 0) {
         if (length > 1) {
