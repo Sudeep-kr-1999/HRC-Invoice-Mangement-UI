@@ -8,7 +8,7 @@ import { DialogDisplayContext } from "./StateProvider";
 function ButtonField() {
   // state "dialogHeading" for passing to the dialogName props in DialogComponent
   const [dialogHeading, setdialogHeading] = useState("");
-  
+
   // state "dialogElement" for passing to dialogElement props in DialogComponent
   const [dialogElement, setdialogElement] = useState([]);
 
