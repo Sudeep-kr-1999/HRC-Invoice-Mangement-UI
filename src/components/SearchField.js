@@ -1,7 +1,6 @@
 import React from "react";
 import TextField from "@mui/material/TextField";
 function SearchField({ label }) {
-  console.log("search field");
   return (
     <TextField
       id="outlined-basic"

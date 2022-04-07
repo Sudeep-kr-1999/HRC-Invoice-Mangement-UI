@@ -7,33 +7,27 @@ import ButtonComponent from "./ButtonComponent";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import { DialogDisplayContext } from "./StateProvider";
 import API from "../axios";
-
 function DialogComponent({ dialogName, dialogElement }) {
-  let isBusinessCodeExist;
-  let isCustomerNumberExist;
-  let isInvoiceIdorDocIdExist;
   const [apiBody, setapiBody] = useState({
-    business_code: "U001",
-    cust_number: "200704045",
-    clear_date: "2022-03-13",
-    business_year: "2022",
-    doc_id: "1938001531",
-    posting_date: "2022-03-13",
-    document_create_date: "2022-03-13",
-    due_in_date: "2022-03-13",
-    invoice_currency: "USD",
-    document_type: "RV",
-    posting_id: "1",
-    total_open_amount: "1998.64",
-    baseline_create_date: "2022-03-13",
-    cust_payment_terms: "NAA8",
-    invoice_id: "1930702251",
-    customer_number: "200704045",
-    sl_no: "48580",
-    new_invoice_currency: "INR",
-    new_cust_payment_terms: "ABCD",
+    business_code: "",
+    cust_number: "",
+    clear_date: "",
+    business_year: "",
+    doc_id: "",
+    posting_date: "",
+    document_create_date: "",
+    due_in_date: "",
+    invoice_currency: "",
+    document_type: "",
+    posting_id: "",
+    total_open_amount: "",
+    baseline_create_date: "",
+    cust_payment_terms: "",
+    invoice_id: "",
+    customer_number: "",
+    new_invoice_currency: "",
+    new_cust_payment_terms: "",
   });
-  console.log("dialogcomponent");
   const {
     dialogDisplay,
     changeDialogDisplay,
@@ -41,6 +35,8 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeDialogBoxPassingData,
     searchData,
     changeSearchData,
+    changeCountTotalData,
+    countTotalData,
   } = useContext(DialogDisplayContext);
 
   let actionType = "";
@@ -61,119 +57,100 @@ function DialogComponent({ dialogName, dialogElement }) {
     actionType = "DELETE";
   }
 
-  const formatDate = useCallback(
-    (date) => {
-      var d = new Date(date),
-        month = "" + (d.getMonth() + 1),
-        day = "" + d.getDate(),
-        year = d.getFullYear();
+  const formatDate = useCallback((date) => {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
 
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
 
-      return [year, month, day].join("-");
-    },
-    [
-      apiBody.clear_date,
-      apiBody.posting_date,
-      apiBody.document_create_date,
-      apiBody.baseline_create_date,
-    ]
-  );
+    return [year, month, day].join("-");
+  }, []);
 
   const cancelFunction = () => {
     changeDialogDisplay("none");
     changeDialogBoxPassingData([]);
+    setapiBody((previousState) => ({
+      ...previousState,
+      business_code: "",
+      cust_number: "",
+      clear_date: "",
+      business_year: "",
+      doc_id: "",
+      posting_date: "",
+      document_create_date: "",
+      due_in_date: "",
+      invoice_currency: "",
+      document_type: "",
+      posting_id: "",
+      total_open_amount: "",
+      baseline_create_date: "",
+      cust_payment_terms: "",
+      invoice_id: "",
+      customer_number: "",
+      new_invoice_currency: "",
+      new_cust_payment_terms: "",
+    }));
   };
 
-  const checkBusinessCode = useCallback(
-    async ({ business_code }) => {
-      try {
-        const response = await API.get(
-          `CheckBusiness?business_code="${business_code}"`
-        );
-        if (response.status === 200) {
-          isBusinessCodeExist = response.data.isBusinessExists;
-        }
-      } catch (error) {
-        console.log("Some Error Occured");
+  const checkBusinessCode = useCallback(async ({ business_code }) => {
+    try {
+      const response = await API.get(
+        `CheckBusiness?business_code="${business_code}"`
+      );
+      if (response.status === 200) {
+        return response.data.isBusinessExists;
       }
-    },
-    [apiBody.business_code]
-  );
-  const checkCustomerNumber = useCallback(
-    async ({ cust_number }) => {
-      try {
-        const response = await API.get(
-          `CheckCustomer?cust_number="${cust_number}"`
-        );
-        if (response.status === 200) {
-          isCustomerNumberExist = response.data.isCustomerExists;
-        }
-      } catch (error) {
-        console.log("Some Error Occured");
+    } catch (error) {
+      console.log("Some Error Occured");
+    }
+  }, []);
+  const checkCustomerNumber = useCallback(async ({ cust_number }) => {
+    try {
+      const response = await API.get(
+        `CheckCustomer?cust_number="${cust_number}"`
+      );
+      if (response.status === 200) {
+        return response.data.isCustomerExists;
       }
-    },
-    [apiBody.cust_number]
-  );
-  const checkInvoiceAndDocId = useCallback(
-    async ({ doc_id, invoice_id }) => {
-      try {
-        const response = await API.get(
-          `CheckInvoiceidAndDocId?doc_id="${doc_id}"&invoice_id="${invoice_id}"`
-        );
-        if (response.status === 200) {
-          isInvoiceIdorDocIdExist = response.data.isInvoiceOrDocExist;
-        }
-      } catch (error) {
-        console.log("Some Error Occured");
+    } catch (error) {
+      console.log("Some Error Occured");
+    }
+  }, []);
+  const checkInvoiceAndDocId = useCallback(async ({ doc_id, invoice_id }) => {
+    try {
+      const response = await API.get(
+        `CheckInvoiceidAndDocId?doc_id="${doc_id}"&invoice_id="${invoice_id}"`
+      );
+      if (response.status === 200) {
+        return response.data.isInvoiceOrDocExist;
       }
-    },
-    [apiBody.doc_id, apiBody.invoice_id]
-  );
+    } catch (error) {
+      console.log("Some Error Occured");
+    }
+  }, []);
   const addFunction = useCallback(async () => {
-    console.log("addfunction");
-    const {
-      business_code,
-      cust_number,
-      clear_date,
-      business_year,
-      doc_id,
-      posting_date,
-      document_create_date,
-      due_in_date,
-      invoice_currency,
-      document_type,
-      posting_id,
-      total_open_amount,
-      baseline_create_date,
-      cust_payment_terms,
-      invoice_id,
-    } = apiBody;
-
-    console.log(apiBody);
-    await checkBusinessCode({ business_code });
-    await checkCustomerNumber({ cust_number });
-    await checkInvoiceAndDocId({ doc_id, invoice_id });
-    console.log(
-      isBusinessCodeExist,
-      isCustomerNumberExist,
-      isInvoiceIdorDocIdExist
-    );
-    if (isBusinessCodeExist !== 1) {
-      alert(
-        "Entered Business Code donot Exist. Please verify your Business Code"
-      );
-    } else if (isCustomerNumberExist !== 1) {
-      alert(
-        "Entered Customer Number donot Exist. Please verify your Customer Number"
-      );
-    } else if (isInvoiceIdorDocIdExist === 1) {
-      alert(
-        "Entered Invoice Id or Document Id already Exist. Please provide unique entry to these fields"
-      );
-    } else {
-      API.post(`AddInvoiceEntry`, {
+    let dataAdditionStatus = false;
+    if (
+      apiBody.business_code !== "" &&
+      apiBody.cust_number !== "" &&
+      apiBody.clear_date !== "" &&
+      apiBody.business_year !== "" &&
+      apiBody.doc_id !== "" &&
+      apiBody.posting_date !== "" &&
+      apiBody.document_create_date !== "" &&
+      apiBody.due_in_date !== "" &&
+      apiBody.invoice_currency !== "" &&
+      apiBody.document_type !== "" &&
+      apiBody.posting_id !== "" &&
+      apiBody.total_open_amount !== "" &&
+      apiBody.baseline_create_date !== "" &&
+      apiBody.cust_payment_terms !== "" &&
+      apiBody.invoice_id !== ""
+    ) {
+      const {
         business_code,
         cust_number,
         clear_date,
@@ -189,24 +166,146 @@ function DialogComponent({ dialogName, dialogElement }) {
         baseline_create_date,
         cust_payment_terms,
         invoice_id,
-      })
-        .then((response) => {
-          response.status === 200 && alert("Data Added Successfully");
-        })
-        .catch((error) => console.log("Some Error Occured"));
-    }
-  }, [apiBody]);
+      } = apiBody;
+      const businessExist = await checkBusinessCode({ business_code });
+      const customerExist = await checkCustomerNumber({ cust_number });
+      const invoicedocExist = await checkInvoiceAndDocId({
+        doc_id,
+        invoice_id,
+      });
 
-  const editFunction = useCallback(() => {
-    console.log("editfunction");
-    console.log(dialogBoxPassingData);
-    changeDialogBoxPassingData([]);
-  }, [apiBody]);
+      if (businessExist !== 1) {
+        alert(
+          "Entered Business Code donot Exist. Please verify your Business Code"
+        );
+        setapiBody((previousState) => ({
+          ...previousState,
+          business_code: "",
+        }));
+      } else if (customerExist !== 1) {
+        alert(
+          "Entered Customer Number donot Exist. Please verify your Customer Number"
+        );
+        setapiBody((previousState) => ({ ...previousState, cust_number: "" }));
+      } else if (invoicedocExist === 1) {
+        alert(
+          "Entered Invoice Id or Document Id already Exist. Please provide unique entry to these fields"
+        );
+        setapiBody((previousState) => ({
+          ...previousState,
+          invoice_id: "",
+          doc_id: "",
+        }));
+      } else {
+        try {
+          const response = await API.post(`AddInvoiceEntry`, {
+            business_code,
+            cust_number,
+            clear_date,
+            business_year,
+            doc_id,
+            posting_date,
+            document_create_date,
+            due_in_date,
+            invoice_currency,
+            document_type,
+            posting_id,
+            total_open_amount,
+            baseline_create_date,
+            cust_payment_terms,
+            invoice_id,
+          });
+          if (response.status === 200) {
+            alert("Data Added Successfully");
+            dataAdditionStatus = true;
+          }
+        } catch (error) {
+          console.log("Some Error Occured");
+        }
+      }
+      if (dataAdditionStatus) {
+        changeCountTotalData(countTotalData + 1);
+        changeDialogDisplay("none");
+        setapiBody((previousState) => ({
+          ...previousState,
+          business_code: "",
+          cust_number: "",
+          clear_date: "",
+          business_year: "",
+          doc_id: "",
+          posting_date: "",
+          document_create_date: "",
+          due_in_date: "",
+          invoice_currency: "",
+          document_type: "",
+          posting_id: "",
+          total_open_amount: "",
+          baseline_create_date: "",
+          cust_payment_terms: "",
+          invoice_id: "",
+          customer_number: "",
+          new_invoice_currency: "",
+          new_cust_payment_terms: "",
+        }));
+      }
+    } else {
+      alert("Please provide all the requried information for adding the data");
+    }
+  }, [
+    apiBody,
+    changeCountTotalData,
+    changeDialogDisplay,
+    checkBusinessCode,
+    checkCustomerNumber,
+    checkInvoiceAndDocId,
+    countTotalData,
+  ]);
+
+  const editFunction = useCallback(async () => {
+    let sl_no = dialogBoxPassingData[0];
+    let dataEditionStatus = false;
+    if (
+      apiBody.new_invoice_currency !== "" &&
+      apiBody.new_cust_payment_terms !== ""
+    ) {
+      const { new_invoice_currency, new_cust_payment_terms } = apiBody;
+      try {
+        const response = await API.post(`EditInvoice`, {
+          sl_no,
+          new_invoice_currency,
+          new_cust_payment_terms,
+        });
+        if (response.status === 200) {
+          alert("Data Edited Successfully");
+          dataEditionStatus = true;
+        }
+      } catch (error) {
+        console.log("Some Error Occured");
+      }
+
+      if (dataEditionStatus) {
+        changeDialogBoxPassingData([]);
+        changeDialogDisplay("none");
+        setapiBody((previousState) => ({
+          ...previousState,
+          new_invoice_currency: "",
+          new_cust_payment_terms: "",
+        }));
+      }
+    } else {
+      alert("Please provide all the required Information");
+    }
+  }, [
+    apiBody,
+    dialogBoxPassingData,
+    changeDialogBoxPassingData,
+    changeDialogDisplay,
+  ]);
 
   const deleteFunction = useCallback(() => {
     console.log(dialogBoxPassingData);
     changeDialogBoxPassingData([]);
-  }, [dialogBoxPassingData]);
+  }, [dialogBoxPassingData, changeDialogBoxPassingData]);
   const searchFunction = useCallback(() => {
     console.log("searchfunction");
   }, [apiBody]);
@@ -251,7 +350,12 @@ function DialogComponent({ dialogName, dialogElement }) {
                     dateAdapter={AdapterDateFns}
                   >
                     <DatePicker
+                      required
                       label={element.field}
+                      InputProps={{
+                        disableUnderline: true,
+                        color: "white",
+                      }}
                       name={element.name}
                       value={apiBody[element.name]}
                       onChange={(newValue) =>
@@ -263,14 +367,16 @@ function DialogComponent({ dialogName, dialogElement }) {
                       views={["year", "month", "day"]}
                       renderInput={(params) => (
                         <TextField
-                          label={element.field}
-                          name={element.name}
+                          InputLabelProps={{
+                            style: { color: "grey" },
+                          }}
                           InputProps={{ disableUnderline: true }}
                           required
                           {...params}
                           variant="standard"
                           sx={{
                             backgroundColor: "white",
+                            color: "white",
                             // width: "25rem",
                             margin: "1rem",
                             borderRadius: "0.2rem",
@@ -339,5 +445,4 @@ function DialogComponent({ dialogName, dialogElement }) {
     </div>
   );
 }
-
 export default React.memo(DialogComponent);

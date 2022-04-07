@@ -2,7 +2,6 @@ import React, { createContext, useState } from "react";
 export const DialogDisplayContext = createContext();
 
 function StateProvider({ children }) {
-  console.log("state provider");
   const [dialogDisplay, setdialogDisplay] = useState("none");
   const [editButtonDisableStatus, seteditButtonDisableStatus] = useState(true);
   const [deleteButtonDisableStatus, setDeleteButtonDisableStatus] =
@@ -12,7 +11,6 @@ function StateProvider({ children }) {
   const [countTotalData, setcountTotalData] = useState(0);
   const [dialogBoxPassingData, setdialogBoxPassingData] = useState([]);
   const [searchData, setsearchData] = useState([]);
-
   const changeSearchData = (newData) => {
     setsearchData(newData);
   };

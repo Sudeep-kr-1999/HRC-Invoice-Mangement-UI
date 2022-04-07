@@ -2,7 +2,6 @@ import React from "react";
 import abcproduct from "../assets/abcproduct.png";
 import highradiuslogo from "../assets/highradiuslogo.png";
 function Header() {
-  console.log("header");
   return (
     <header className="relative flex flex-col">
       <div  className="relative flex items-center bg-header flex-wrap h-22 pt-2">

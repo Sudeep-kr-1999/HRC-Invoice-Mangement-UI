@@ -5,3 +5,6 @@
   .MuiTablePagination-actions {
   color: white;
 }
+.css-aqpgxn-MuiFormLabel-root-MuiInputLabel-root.Mui-error {
+  color: grey;
+}

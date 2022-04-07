@@ -1,7 +1,6 @@
 import React from "react";
 
 function Footer() {
-  console.log("footer");
   return (
     <footer className="relative flex items-center justify-center text-white mb-10">
       <span>

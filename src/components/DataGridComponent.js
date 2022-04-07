@@ -4,7 +4,6 @@ import API from "../axios";
 import { DialogDisplayContext } from "./StateProvider";
 
 function DataGridComponent() {
-  console.log("datagrid");
   const [displayRows, setdisplayRows] = useState([]);
   const [pageNo, setpageNo] = useState(1);
   const {
@@ -14,6 +13,8 @@ function DataGridComponent() {
     changeDeleteButtonDisableStatus,
     changepredictButtonDisableStatus,
     changeDialogBoxPassingData,
+    dialogBoxPassingData,
+    dialogDisplay,
   } = useContext(DialogDisplayContext);
 
   // columns for datagrid
@@ -66,7 +67,7 @@ function DataGridComponent() {
             changeCountTotalData(response.data.totalcount);
         })
         .catch((error) => console.log("Some Error Occured")),
-    [countTotalData]
+    []
   );
 
   const handleButtonStatus = (item) => {
@@ -93,7 +94,7 @@ function DataGridComponent() {
   useEffect(() => {
     getAllUiDetails();
     getCountUiDetails();
-  }, [pageNo]);
+  }, [pageNo, countTotalData, dialogDisplay]);
   return (
     <div className="relative flex flex-1 h-full w-full mt-0 mb-10 px-5 bg-grid border-cyan-900">
       <DataGrid
@@ -108,6 +109,7 @@ function DataGridComponent() {
         disableExtendRowFullWidth={false}
         paginationMode="server"
         pagination
+        selectionModel={dialogBoxPassingData}
         rowCount={countTotalData}
         onPageChange={(newPage) => {
           setpageNo(newPage + 1);

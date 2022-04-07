@@ -6,10 +6,9 @@ import DialogComponent from "./DialogComponent";
 import { DialogDisplayContext } from "./StateProvider";
 
 function ButtonField() {
-  console.log("buttonfield");
   // state "dialogHeading" for passing to the dialogName props in DialogComponent
   const [dialogHeading, setdialogHeading] = useState("");
-
+  
   // state "dialogElement" for passing to dialogElement props in DialogComponent
   const [dialogElement, setdialogElement] = useState([]);
 
@@ -19,7 +18,6 @@ function ButtonField() {
     editButtonDisableStatus,
     deleteButtonDisableStatus,
     predictButtonDisableStatus,
-    dialogBoxPassingData,
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -84,7 +82,6 @@ function ButtonField() {
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
-    console.log(dialogBoxPassingData);
   };
   // function for "DELETE" button
   const deleteFunction = () => {
@@ -96,7 +93,6 @@ function ButtonField() {
     setdialogHeading("Delete Records ?");
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
-    console.log(dialogBoxPassingData);
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">
