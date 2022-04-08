@@ -26,7 +26,7 @@ function ButtonField() {
     const dialogElemententry = [
       { field: "Document ID", type: "text", name: "doc_id" },
       { field: "Invoice Id", type: "text", name: "invoice_id" },
-      { field: "Customer Number", type: "text", name: "customer_number" },
+      { field: "Customer Number", type: "text", name: "cust_number" },
       { field: "Business Year", type: "text", name: "business_year" },
     ];
     setdialogElement(dialogElemententry);

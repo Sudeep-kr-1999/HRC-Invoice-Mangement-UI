@@ -19,34 +19,92 @@ function DataGridComponent() {
 
   // columns for datagrid
   const columns = [
-    { field: "sl_no", headerName: "Sl no", flex: 1 },
-    { field: "business_code", headerName: "Business Code", flex: 1 },
-    { field: "cust_number", headerName: "Customer Number", flex: 1 },
-    { field: "clear_date", headerName: "Clear Date", flex: 1 },
-    { field: "business_year", headerName: "Business Year", flex: 1 },
-    { field: "doc_id", headerName: "Document Id", flex: 1 },
-    { field: "posting_date", headerName: "Posting Date", flex: 1 },
+    { field: "sl_no", headerName: "Sl no", width: 60, align: "center" },
+    {
+      field: "business_code",
+      headerName: "Business Code",
+      width: 120,
+      align: "center",
+    },
+    {
+      field: "cust_number",
+      headerName: "Customer Number",
+      width: 140,
+      align: "center",
+    },
+    {
+      field: "clear_date",
+      headerName: "Clear Date",
+      width: 110,
+      align: "center",
+    },
+    {
+      field: "business_year",
+      headerName: "Business Year",
+      width: 120,
+      align: "center",
+    },
+    { field: "doc_id", headerName: "Document Id", width: 120, align: "center" },
+    {
+      field: "posting_date",
+      headerName: "Posting Date",
+      width: 120,
+      align: "center",
+    },
     {
       field: "document_create_date",
       headerName: "Document Create Date",
-      flex: 1,
+      width: 180,
+      align: "center",
     },
-    { field: "due_in_date", headerName: "Due Date", flex: 1 },
-    { field: "invoice_currency", headerName: "Invoice Currency", flex: 1 },
-    { field: "document_type", headerName: "Document Type", flex: 1 },
-    { field: "posting_id", headerName: "Posting Id", flex: 1 },
-    { field: "total_open_amount", headerName: "Total Open Amount", flex: 1 },
+    {
+      field: "due_in_date",
+      headerName: "Due Date",
+      width: 100,
+      align: "center",
+    },
+    {
+      field: "invoice_currency",
+      headerName: "Invoice Currency",
+      width: 140,
+      align: "center",
+    },
+    {
+      field: "document_type",
+      headerName: "Document Type",
+      width: 130,
+      align: "center",
+    },
+    {
+      field: "posting_id",
+      headerName: "Posting Id",
+      width: 100,
+      align: "center",
+    },
+    {
+      field: "total_open_amount",
+      headerName: "Total Open Amount",
+      width: 150,
+      align: "center",
+    },
     {
       field: "baseline_create_date",
       headerName: "Baseline Create Date",
-      flex: 1,
+      width: 160,
+      align: "center",
     },
     {
       field: "cust_payment_terms",
       headerName: "Customer Payment Terms",
-      flex: 1,
+      width: 190,
+      align: "center",
     },
-    { field: "invoice_id", headerName: "Invoice Id", flex: 1 },
+    {
+      field: "invoice_id",
+      headerName: "Invoice Id",
+      width: 100,
+      align: "center",
+    },
   ];
 
   const getAllUiDetails = useCallback(
@@ -96,7 +154,7 @@ function DataGridComponent() {
     getCountUiDetails();
   }, [pageNo, countTotalData, dialogDisplay]);
   return (
-    <div className="relative flex flex-1 h-full w-full mt-0 mb-10 px-5 bg-grid border-cyan-900">
+    <div className="relative flex flex-1 h-full w-full mt-0 mb-5 px-5 bg-grid border-cyan-900">
       <DataGrid
         columns={columns}
         checkboxSelection

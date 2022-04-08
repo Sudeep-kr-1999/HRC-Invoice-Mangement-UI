@@ -24,7 +24,6 @@ function DialogComponent({ dialogName, dialogElement }) {
     baseline_create_date: "",
     cust_payment_terms: "",
     invoice_id: "",
-    customer_number: "",
     new_invoice_currency: "",
     new_cust_payment_terms: "",
   });
@@ -91,7 +90,6 @@ function DialogComponent({ dialogName, dialogElement }) {
       baseline_create_date: "",
       cust_payment_terms: "",
       invoice_id: "",
-      customer_number: "",
       new_invoice_currency: "",
       new_cust_payment_terms: "",
     }));
@@ -257,9 +255,6 @@ function DialogComponent({ dialogName, dialogElement }) {
           baseline_create_date: "",
           cust_payment_terms: "",
           invoice_id: "",
-          customer_number: "",
-          new_invoice_currency: "",
-          new_cust_payment_terms: "",
         }));
       }
     } else {
@@ -356,9 +351,42 @@ function DialogComponent({ dialogName, dialogElement }) {
     countTotalData,
   ]);
 
-  const searchFunction = useCallback(() => {
-    console.log("searchfunction");
-  }, [apiBody]);
+  const searchFunction = useCallback(async () => {
+    let advSearchStatus = false;
+    if (
+      apiBody.doc_id !== "" &&
+      apiBody.invoice_id !== "" &&
+      apiBody.cust_number !== "" &&
+      apiBody.business_year !== ""
+    ) {
+      const { doc_id, invoice_id, cust_number, business_year } = apiBody;
+      try {
+        const response = await API.get(
+          `GetSearchParameters?doc_id="${doc_id}"&invoice_id="${invoice_id}"&customer_number="${cust_number}"&business_year="${business_year}"`
+        );
+        if (response.status === 200) {
+          console.log(response.data);
+          advSearchStatus = true;
+        }
+      } catch (error) {
+        alert("Some Error Occured");
+      }
+
+      if (advSearchStatus) {
+        console.log("Search done");
+        changeDialogDisplay("none");
+        setapiBody((previousState) => ({
+          ...previousState,
+          cust_number: "",
+          business_year: "",
+          doc_id: "",
+          invoice_id: "",
+        }));
+      }
+    } else {
+      alert("Please provide all the required information");
+    }
+  }, [apiBody,changeDialogDisplay]);
 
   return (
     <div
