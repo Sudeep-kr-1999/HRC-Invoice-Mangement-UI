@@ -37,6 +37,9 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeSearchData,
     changeCountTotalData,
     countTotalData,
+    changeeditButtonDisableStatus,
+    changeDeleteButtonDisableStatus,
+    changepredictButtonDisableStatus,
   } = useContext(DialogDisplayContext);
 
   let actionType = "";
@@ -71,7 +74,6 @@ function DialogComponent({ dialogName, dialogElement }) {
 
   const cancelFunction = () => {
     changeDialogDisplay("none");
-    changeDialogBoxPassingData([]);
     setapiBody((previousState) => ({
       ...previousState,
       business_code: "",
@@ -93,6 +95,18 @@ function DialogComponent({ dialogName, dialogElement }) {
       new_invoice_currency: "",
       new_cust_payment_terms: "",
     }));
+    if (dialogName === "Edit") {
+      changeDialogBoxPassingData([]);
+      changeeditButtonDisableStatus(true);
+      changeDeleteButtonDisableStatus(true);
+      changepredictButtonDisableStatus(true);
+    } else if (dialogName === "Delete Records ?") {
+      changeDialogBoxPassingData([]);
+      changeDialogDisplay("none");
+      changeeditButtonDisableStatus(true);
+      changeDeleteButtonDisableStatus(true);
+      changepredictButtonDisableStatus(true);
+    }
   };
 
   const checkBusinessCode = useCallback(async ({ business_code }) => {
@@ -280,12 +294,15 @@ function DialogComponent({ dialogName, dialogElement }) {
           dataEditionStatus = true;
         }
       } catch (error) {
-        console.log("Some Error Occured");
+        alert("Some Error Occured");
       }
 
       if (dataEditionStatus) {
         changeDialogBoxPassingData([]);
         changeDialogDisplay("none");
+        changeeditButtonDisableStatus(true);
+        changeDeleteButtonDisableStatus(true);
+        changepredictButtonDisableStatus(true);
         setapiBody((previousState) => ({
           ...previousState,
           new_invoice_currency: "",
@@ -300,12 +317,45 @@ function DialogComponent({ dialogName, dialogElement }) {
     dialogBoxPassingData,
     changeDialogBoxPassingData,
     changeDialogDisplay,
+    changeDeleteButtonDisableStatus,
+    changeeditButtonDisableStatus,
+    changepredictButtonDisableStatus,
   ]);
 
-  const deleteFunction = useCallback(() => {
-    console.log(dialogBoxPassingData);
-    changeDialogBoxPassingData([]);
-  }, [dialogBoxPassingData, changeDialogBoxPassingData]);
+  const deleteFunction = useCallback(async () => {
+    let delete_list = dialogBoxPassingData;
+    let data_deletionStatus = false;
+    try {
+      const response = await API.delete("DeleteInvoice", {
+        data: { delete_list },
+      });
+      if (response.status === 200) {
+        alert("Data Deleted Successfully");
+        data_deletionStatus = true;
+      }
+    } catch (error) {
+      alert("Some Error Occured");
+    }
+
+    if (data_deletionStatus) {
+      changeCountTotalData(countTotalData - delete_list.length);
+      changeDialogBoxPassingData([]);
+      changeDialogDisplay("none");
+      changeeditButtonDisableStatus(true);
+      changeDeleteButtonDisableStatus(true);
+      changepredictButtonDisableStatus(true);
+    }
+  }, [
+    dialogBoxPassingData,
+    changeDialogBoxPassingData,
+    changeCountTotalData,
+    changeDeleteButtonDisableStatus,
+    changeDialogDisplay,
+    changeeditButtonDisableStatus,
+    changepredictButtonDisableStatus,
+    countTotalData,
+  ]);
+
   const searchFunction = useCallback(() => {
     console.log("searchfunction");
   }, [apiBody]);
