@@ -25,6 +25,7 @@ function DataGridComponent() {
     searchCustomerExpression,
     pageNumber,
     changePageNumber,
+    changeEditDialogRow,
   } = useContext(DialogDisplayContext);
   const [displayRows, setdisplayRows] = useState([]);
   // columns for datagrid
@@ -198,6 +199,8 @@ function DataGridComponent() {
         changeeditButtonDisableStatus(false);
         changepredictButtonDisableStatus(false);
         changeDeleteButtonDisableStatus(false);
+        const selectedRow = displayRows.filter((row) => row.sl_no === item[0]);
+        changeEditDialogRow(selectedRow);
       }
     } else {
       changeeditButtonDisableStatus(true);
@@ -235,7 +238,9 @@ function DataGridComponent() {
         onPageChange={(newPage) => {
           changePageNumber(newPage + 1);
         }}
-        onSelectionModelChange={(item) => handleButtonStatus(item)}
+        onSelectionModelChange={(item) => {
+          handleButtonStatus(item);
+        }}
         sx={{
           color: "white",
           border: "none",

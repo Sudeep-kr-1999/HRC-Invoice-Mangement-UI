@@ -1,5 +1,5 @@
 import { TextField } from "@mui/material";
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import AdapterDateFns from "@mui/lab/AdapterDateFns";
 import LocalizationProvider from "@mui/lab/LocalizationProvider";
 import DatePicker from "@mui/lab/DatePicker";
@@ -31,6 +31,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     dialogDisplay,
     changeDialogDisplay,
     dialogBoxPassingData,
+    editDialogrow,
     changeDialogBoxPassingData,
     changeSearchData,
     changeCountTotalData,
@@ -38,6 +39,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeeditButtonDisableStatus,
     changeDeleteButtonDisableStatus,
     changepredictButtonDisableStatus,
+    changeEditDialogRow,
   } = useContext(DialogDisplayContext);
 
   let actionType = "";
@@ -326,6 +328,7 @@ function DialogComponent({ dialogName, dialogElement }) {
         changeeditButtonDisableStatus(true);
         changeDeleteButtonDisableStatus(true);
         changepredictButtonDisableStatus(true);
+        changeEditDialogRow([]);
         setapiBody((previousState) => ({
           ...previousState,
           new_invoice_currency: "",
@@ -351,6 +354,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeDeleteButtonDisableStatus,
     changeeditButtonDisableStatus,
     changepredictButtonDisableStatus,
+    changeEditDialogRow,
     searchFunction,
   ]);
 
@@ -404,6 +408,15 @@ function DialogComponent({ dialogName, dialogElement }) {
     countTotalData,
     searchFunction,
   ]);
+  useEffect(() => {
+    setapiBody((previousState) => ({
+      ...previousState,
+      new_invoice_currency:
+        editDialogrow.length !== 0 ? editDialogrow[0].invoice_currency : "",
+      new_cust_payment_terms:
+        editDialogrow.length !== 0 ? editDialogrow[0].cust_payment_terms : "",
+    }));
+  }, [editDialogrow]);
 
   return (
     <div
@@ -433,7 +446,6 @@ function DialogComponent({ dialogName, dialogElement }) {
                     required
                     sx={{
                       backgroundColor: "white",
-                      // width: "25rem",
                       margin: "1rem",
                       borderRadius: "0.2rem",
                       paddingLeft: "10px",
