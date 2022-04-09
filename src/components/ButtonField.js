@@ -18,6 +18,7 @@ function ButtonField() {
     editButtonDisableStatus,
     deleteButtonDisableStatus,
     predictButtonDisableStatus,
+    changeCustomerExpression,
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -31,6 +32,7 @@ function ButtonField() {
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
+    changeCustomerExpression("");
   };
 
   // function for "ADD" button
@@ -67,6 +69,7 @@ function ButtonField() {
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
+    changeCustomerExpression("");
   };
 
   // function for "EDIT" button
@@ -82,6 +85,7 @@ function ButtonField() {
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
+    changeCustomerExpression("");
   };
   // function for "DELETE" button
   const deleteFunction = () => {
@@ -93,6 +97,7 @@ function ButtonField() {
     setdialogHeading("Delete Records ?");
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
+    changeCustomerExpression("");
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">

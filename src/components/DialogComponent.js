@@ -32,7 +32,6 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeDialogDisplay,
     dialogBoxPassingData,
     changeDialogBoxPassingData,
-    searchData,
     changeSearchData,
     changeCountTotalData,
     countTotalData,
@@ -365,15 +364,14 @@ function DialogComponent({ dialogName, dialogElement }) {
           `GetSearchParameters?doc_id="${doc_id}"&invoice_id="${invoice_id}"&customer_number="${cust_number}"&business_year="${business_year}"`
         );
         if (response.status === 200) {
-          console.log(response.data);
           advSearchStatus = true;
+          changeSearchData(response.data);
         }
       } catch (error) {
         alert("Some Error Occured");
       }
 
       if (advSearchStatus) {
-        console.log("Search done");
         changeDialogDisplay("none");
         setapiBody((previousState) => ({
           ...previousState,
@@ -386,7 +384,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     } else {
       alert("Please provide all the required information");
     }
-  }, [apiBody,changeDialogDisplay]);
+  }, [apiBody, changeDialogDisplay,changeSearchData]);
 
   return (
     <div

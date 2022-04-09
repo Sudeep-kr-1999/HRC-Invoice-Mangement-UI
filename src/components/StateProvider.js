@@ -10,7 +10,18 @@ function StateProvider({ children }) {
     useState(true);
   const [countTotalData, setcountTotalData] = useState(0);
   const [dialogBoxPassingData, setdialogBoxPassingData] = useState([]);
-  const [searchData, setsearchData] = useState([]);
+  const [searchData, setsearchData] = useState(null);
+  const [pageNumber, setpageNumber] = useState(1);
+  const [searchCustomerExpression, setsearchCustomerExpression] = useState({
+    customer_number: "",
+  });
+
+  const changePageNumber = (newpageNumber) => {
+    setpageNumber(newpageNumber);
+  };
+  const changeCustomerExpression = (newExpression) => {
+    setsearchCustomerExpression({ customer_number: newExpression });
+  };
   const changeSearchData = (newData) => {
     setsearchData(newData);
   };
@@ -51,6 +62,10 @@ function StateProvider({ children }) {
         changeDialogBoxPassingData,
         searchData,
         changeSearchData,
+        searchCustomerExpression,
+        changeCustomerExpression,
+        pageNumber,
+        changePageNumber,
       }}
     >
       {children}

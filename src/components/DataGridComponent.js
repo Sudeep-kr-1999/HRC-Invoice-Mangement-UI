@@ -1,11 +1,17 @@
-import React, { useCallback, useContext, useEffect, useState } from "react";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import API from "../axios";
 import { DialogDisplayContext } from "./StateProvider";
 
 function DataGridComponent() {
-  const [displayRows, setdisplayRows] = useState([]);
-  const [pageNo, setpageNo] = useState(1);
+  const timeoutClear = useRef();
+  const timeoutClear1 = useRef();
   const {
     countTotalData,
     changeCountTotalData,
@@ -14,9 +20,13 @@ function DataGridComponent() {
     changepredictButtonDisableStatus,
     changeDialogBoxPassingData,
     dialogBoxPassingData,
+    searchData,
     dialogDisplay,
+    searchCustomerExpression,
+    pageNumber,
+    changePageNumber,
   } = useContext(DialogDisplayContext);
-
+  const [displayRows, setdisplayRows] = useState([]);
   // columns for datagrid
   const columns = [
     { field: "sl_no", headerName: "Sl no", width: 60, align: "center" },
@@ -107,54 +117,108 @@ function DataGridComponent() {
     },
   ];
 
-  const getAllUiDetails = useCallback(
-    () =>
-      API.get(`GetAllUiDetails?page=${pageNo}`)
+  const getAllUiDetails = useCallback(() => {
+    if (
+      searchData === null &&
+      searchCustomerExpression.customer_number === ""
+    ) {
+      API.get(`GetAllUiDetails?page=${pageNumber}`)
         .then((response) => {
           response.status === 200 && setdisplayRows(response.data);
         })
-        .catch((error) => console.log("Some Error Occured")),
-    [pageNo]
-  );
+        .catch((error) => console.log("Some Error Occured"));
+    } else if (
+      searchCustomerExpression.customer_number === "" &&
+      searchData !== null
+    ) {
+      setdisplayRows(searchData);
+    } else if (
+      searchData === null &&
+      searchCustomerExpression.customer_number !== ""
+    ) {
+      clearTimeout(timeoutClear.current);
+      timeoutClear.current = setTimeout(() => {
+        API.get(
+          `GetSearchCustomerId?customer_number=${searchCustomerExpression.customer_number}&page=${pageNumber}`
+        )
+          .then((response) => {
+            if (response.status === 200) {
+              setdisplayRows(response.data);
+            }
+          })
+          .catch((error) => console.log("Some Error Occured"));
+      }, 500);
+    }
+  }, [pageNumber, searchData, searchCustomerExpression]);
 
-  const getCountUiDetails = useCallback(
-    () =>
+  const getCountUiDetails = useCallback(() => {
+    if (
+      searchData === null &&
+      searchCustomerExpression.customer_number === ""
+    ) {
       API.get(`GetCountUIDetails`)
         .then((response) => {
           response.status === 200 &&
             changeCountTotalData(response.data.totalcount);
         })
-        .catch((error) => console.log("Some Error Occured")),
-    []
-  );
+        .catch((error) => console.log("Some Error Occured"));
+    } else if (
+      searchCustomerExpression.customer_number === "" &&
+      searchData !== null
+    ) {
+      changeCountTotalData(searchData.length);
+    } else if (
+      searchCustomerExpression.customer_number !== "" &&
+      searchData === null
+    ) {
+      clearTimeout(timeoutClear1.current);
+      timeoutClear1.current = setTimeout(() => {
+        API.get(
+          `CustomerIdSearchCount?customer_number=${searchCustomerExpression.customer_number}`
+        )
+          .then((response) => {
+            if (response.status === 200) {
+              changeCountTotalData(response.data.total_customer_count);
+            }
+          })
+          .catch((error) => console.log("Some Error Occured"));
+      }, 500);
+    }
+  }, [searchData, changeCountTotalData, searchCustomerExpression]);
 
   const handleButtonStatus = (item) => {
     let length = item.length;
     changeDialogBoxPassingData(item);
-    {
-      if (length > 0) {
-        if (length > 1) {
-          changepredictButtonDisableStatus(false);
-          changeDeleteButtonDisableStatus(false);
-          changeeditButtonDisableStatus(true);
-        } else {
-          changeeditButtonDisableStatus(false);
-          changepredictButtonDisableStatus(false);
-          changeDeleteButtonDisableStatus(false);
-        }
-      } else {
+    if (length > 0) {
+      if (length > 1) {
+        changepredictButtonDisableStatus(false);
+        changeDeleteButtonDisableStatus(false);
         changeeditButtonDisableStatus(true);
-        changepredictButtonDisableStatus(true);
-        changeDeleteButtonDisableStatus(true);
+      } else {
+        changeeditButtonDisableStatus(false);
+        changepredictButtonDisableStatus(false);
+        changeDeleteButtonDisableStatus(false);
       }
+    } else {
+      changeeditButtonDisableStatus(true);
+      changepredictButtonDisableStatus(true);
+      changeDeleteButtonDisableStatus(true);
     }
   };
   useEffect(() => {
     getAllUiDetails();
     getCountUiDetails();
-  }, [pageNo, countTotalData, dialogDisplay]);
+  }, [
+    pageNumber,
+    countTotalData,
+    dialogDisplay,
+    searchData,
+    getAllUiDetails,
+    getCountUiDetails,
+    searchCustomerExpression,
+  ]);
   return (
-    <div className="relative flex flex-1 h-full w-full mt-0 mb-5 px-5 bg-grid border-cyan-900">
+    <div className="relative flex flex-1 h-full w-full mt-0 px-5 bg-grid border-cyan-900">
       <DataGrid
         columns={columns}
         checkboxSelection
@@ -163,14 +227,13 @@ function DataGridComponent() {
         rowsPerPageOptions={[10]}
         aria-label="string"
         getRowId={(row) => row.sl_no}
-        autoHeight
         disableExtendRowFullWidth={false}
         paginationMode="server"
-        pagination
         selectionModel={dialogBoxPassingData}
+        page={pageNumber - 1}
         rowCount={countTotalData}
         onPageChange={(newPage) => {
-          setpageNo(newPage + 1);
+          changePageNumber(newPage + 1);
         }}
         onSelectionModelChange={(item) => handleButtonStatus(item)}
         sx={{
