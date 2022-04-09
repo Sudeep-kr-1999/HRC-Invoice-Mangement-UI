@@ -70,6 +70,35 @@ function DialogComponent({ dialogName, dialogElement }) {
     return [year, month, day].join("-");
   }, []);
 
+  const searchFunction = useCallback(async () => {
+    let advSearchStatus = false;
+    if (
+      apiBody.doc_id !== "" &&
+      apiBody.invoice_id !== "" &&
+      apiBody.cust_number !== "" &&
+      apiBody.business_year !== ""
+    ) {
+      const { doc_id, invoice_id, cust_number, business_year } = apiBody;
+      try {
+        const response = await API.get(
+          `GetSearchParameters?doc_id="${doc_id}"&invoice_id="${invoice_id}"&customer_number="${cust_number}"&business_year="${business_year}"`
+        );
+        if (response.status === 200) {
+          advSearchStatus = true;
+          changeSearchData(response.data);
+        }
+      } catch (error) {
+        alert("Some Error Occured");
+      }
+
+      if (advSearchStatus) {
+        changeDialogDisplay("none");
+      }
+    } else {
+      alert("Please provide all the required information");
+    }
+  }, [apiBody, changeDialogDisplay, changeSearchData]);
+
   const cancelFunction = () => {
     changeDialogDisplay("none");
     setapiBody((previousState) => ({
@@ -302,6 +331,14 @@ function DialogComponent({ dialogName, dialogElement }) {
           new_invoice_currency: "",
           new_cust_payment_terms: "",
         }));
+        if (
+          apiBody.doc_id !== "" &&
+          apiBody.invoice_id !== "" &&
+          apiBody.cust_number !== "" &&
+          apiBody.business_year !== ""
+        ) {
+          searchFunction();
+        }
       }
     } else {
       alert("Please provide all the required Information");
@@ -314,6 +351,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeDeleteButtonDisableStatus,
     changeeditButtonDisableStatus,
     changepredictButtonDisableStatus,
+    searchFunction,
   ]);
 
   const deleteFunction = useCallback(async () => {
@@ -332,47 +370,13 @@ function DialogComponent({ dialogName, dialogElement }) {
     }
 
     if (data_deletionStatus) {
-      changeCountTotalData(countTotalData - delete_list.length);
-      changeDialogBoxPassingData([]);
-      changeDialogDisplay("none");
-      changeeditButtonDisableStatus(true);
-      changeDeleteButtonDisableStatus(true);
-      changepredictButtonDisableStatus(true);
-    }
-  }, [
-    dialogBoxPassingData,
-    changeDialogBoxPassingData,
-    changeCountTotalData,
-    changeDeleteButtonDisableStatus,
-    changeDialogDisplay,
-    changeeditButtonDisableStatus,
-    changepredictButtonDisableStatus,
-    countTotalData,
-  ]);
-
-  const searchFunction = useCallback(async () => {
-    let advSearchStatus = false;
-    if (
-      apiBody.doc_id !== "" &&
-      apiBody.invoice_id !== "" &&
-      apiBody.cust_number !== "" &&
-      apiBody.business_year !== ""
-    ) {
-      const { doc_id, invoice_id, cust_number, business_year } = apiBody;
-      try {
-        const response = await API.get(
-          `GetSearchParameters?doc_id="${doc_id}"&invoice_id="${invoice_id}"&customer_number="${cust_number}"&business_year="${business_year}"`
-        );
-        if (response.status === 200) {
-          advSearchStatus = true;
-          changeSearchData(response.data);
-        }
-      } catch (error) {
-        alert("Some Error Occured");
-      }
-
-      if (advSearchStatus) {
-        changeDialogDisplay("none");
+      if (
+        apiBody.doc_id !== "" &&
+        apiBody.invoice_id !== "" &&
+        apiBody.cust_number !== "" &&
+        apiBody.business_year !== ""
+      ) {
+        searchFunction();
         setapiBody((previousState) => ({
           ...previousState,
           cust_number: "",
@@ -381,10 +385,25 @@ function DialogComponent({ dialogName, dialogElement }) {
           invoice_id: "",
         }));
       }
-    } else {
-      alert("Please provide all the required information");
+      changeCountTotalData(countTotalData - delete_list.length);
+      changeDialogBoxPassingData([]);
+      changeDialogDisplay("none");
+      changeeditButtonDisableStatus(true);
+      changeDeleteButtonDisableStatus(true);
+      changepredictButtonDisableStatus(true);
     }
-  }, [apiBody, changeDialogDisplay,changeSearchData]);
+  }, [
+    apiBody,
+    dialogBoxPassingData,
+    changeDialogBoxPassingData,
+    changeCountTotalData,
+    changeDeleteButtonDisableStatus,
+    changeDialogDisplay,
+    changeeditButtonDisableStatus,
+    changepredictButtonDisableStatus,
+    countTotalData,
+    searchFunction,
+  ]);
 
   return (
     <div
