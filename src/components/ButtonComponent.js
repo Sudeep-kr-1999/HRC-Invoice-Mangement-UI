@@ -1,8 +1,10 @@
 import React from "react";
 import Button from "@mui/material/Button";
+import RefreshIcon from "@mui/icons-material/Refresh";
 function ButtonComponent({ name, workingFunction, state }) {
-  return (
+  return name !== "REFRESH" ? (
     <Button
+      variant="outlined"
       disabled={state}
       sx={{
         color: "white",
@@ -10,10 +12,25 @@ function ButtonComponent({ name, workingFunction, state }) {
         ":hover": { backgroundColor: "#14aff1" },
         position: "relative",
         display: "flex",
+        margin: "5px",
       }}
       onClick={workingFunction}
     >
       {name}
+    </Button>
+  ) : (
+    <Button
+      sx={{
+        color: "white",
+        borderColor: "#14aff1",
+        ":hover": { backgroundColor: "#14aff1" },
+        position: "relative",
+        display: "flex",
+        margin: "5px",
+      }}
+      onClick={workingFunction}
+    >
+      <RefreshIcon />
     </Button>
   );
 }

@@ -3,6 +3,7 @@ export const DialogDisplayContext = createContext();
 
 function StateProvider({ children }) {
   const [dialogDisplay, setdialogDisplay] = useState("none");
+  const [isRefreshed, setisRefreshed] = useState(false);
   const [editDialogrow, seteditDialogrow] = useState([]);
   const [editButtonDisableStatus, seteditButtonDisableStatus] = useState(true);
   const [deleteButtonDisableStatus, setDeleteButtonDisableStatus] =
@@ -17,6 +18,9 @@ function StateProvider({ children }) {
     customer_number: "",
   });
 
+  const changeisRefreshed = (newRefreshStatus) => {
+    setisRefreshed(newRefreshStatus);
+  };
   const changeEditDialogRow = (newrow) => {
     seteditDialogrow(newrow);
   };
@@ -72,6 +76,8 @@ function StateProvider({ children }) {
         changePageNumber,
         editDialogrow,
         changeEditDialogRow,
+        isRefreshed,
+        changeisRefreshed,
       }}
     >
       {children}

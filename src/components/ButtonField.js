@@ -19,6 +19,10 @@ function ButtonField() {
     deleteButtonDisableStatus,
     predictButtonDisableStatus,
     changeCustomerExpression,
+    changeisRefreshed,
+    changePageNumber,
+    changeSearchData,
+    changeEditDialogRow,
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -97,6 +101,14 @@ function ButtonField() {
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
   };
+
+  const refreshFunction = () => {
+    changeisRefreshed(true);
+    changePageNumber(1);
+    changeCustomerExpression("");
+    changeSearchData(null);
+    changeEditDialogRow([]);
+  };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">
       <div className="relative flex flex-1 justify-center items-center">
@@ -112,6 +124,7 @@ function ButtonField() {
             workingFunction={advanceSearchFunction}
           />
         </ButtonGroup>
+        <ButtonComponent name="REFRESH" workingFunction={refreshFunction} />
       </div>
 
       {/* SEARCH FIELD  */}
