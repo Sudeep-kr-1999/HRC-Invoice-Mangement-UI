@@ -20,6 +20,7 @@ function ButtonComponent({ name, workingFunction, state }) {
     </Button>
   ) : (
     <Button
+    variant="outlined"
       sx={{
         color: "white",
         borderColor: "#14aff1",
