@@ -21,13 +21,13 @@ function DataGridComponent() {
     changeDialogBoxPassingData,
     dialogBoxPassingData,
     searchData,
-    dialogDisplay,
     searchCustomerExpression,
     pageNumber,
     changePageNumber,
     changeEditDialogRow,
-    isRefreshed,
-    changeisRefreshed,
+    editStatus,
+    additionStatus,
+    deletionStatus,
   } = useContext(DialogDisplayContext);
   const [displayRows, setdisplayRows] = useState([]);
   // columns for datagrid
@@ -212,22 +212,18 @@ function DataGridComponent() {
   };
   useEffect(() => {
     getAllUiDetails();
-    getCountUiDetails();
-
-    return () => {
-      changeisRefreshed(false);
-    };
   }, [
     pageNumber,
-    countTotalData,
-    dialogDisplay,
+    editStatus,
     searchData,
-    getAllUiDetails,
-    getCountUiDetails,
+    deletionStatus,
+    additionStatus,
     searchCustomerExpression,
-    isRefreshed,
-    changeisRefreshed,
   ]);
+
+  useEffect(() => {
+    getCountUiDetails();
+  }, [searchData, searchCustomerExpression]);
   return (
     <div className="relative flex flex-1 h-full w-full mt-0 px-5 bg-grid border-cyan-900">
       <DataGrid

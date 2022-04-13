@@ -40,6 +40,10 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeDeleteButtonDisableStatus,
     changepredictButtonDisableStatus,
     changeEditDialogRow,
+    changeEditStatus,
+    changeAdditionStatus,
+    changeDeletionStatus,
+    isRefreshed,
   } = useContext(DialogDisplayContext);
 
   let actionType = "";
@@ -267,6 +271,7 @@ function DialogComponent({ dialogName, dialogElement }) {
       }
       if (dataAdditionStatus) {
         changeCountTotalData(countTotalData + 1);
+        changeAdditionStatus(true);
         changeDialogDisplay("none");
         setapiBody((previousState) => ({
           ...previousState,
@@ -297,6 +302,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     checkBusinessCode,
     checkCustomerNumber,
     checkInvoiceAndDocId,
+    changeAdditionStatus,
     countTotalData,
   ]);
 
@@ -323,6 +329,7 @@ function DialogComponent({ dialogName, dialogElement }) {
       }
 
       if (dataEditionStatus) {
+        changeEditStatus(true);
         changeDialogBoxPassingData([]);
         changeDialogDisplay("none");
         changeeditButtonDisableStatus(true);
@@ -356,6 +363,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     changepredictButtonDisableStatus,
     changeEditDialogRow,
     searchFunction,
+    changeEditStatus,
   ]);
 
   const deleteFunction = useCallback(async () => {
@@ -391,6 +399,7 @@ function DialogComponent({ dialogName, dialogElement }) {
       }
       changeCountTotalData(countTotalData - delete_list.length);
       changeDialogBoxPassingData([]);
+      changeDeletionStatus(true);
       changeDialogDisplay("none");
       changeeditButtonDisableStatus(true);
       changeDeleteButtonDisableStatus(true);
@@ -407,6 +416,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     changepredictButtonDisableStatus,
     countTotalData,
     searchFunction,
+    changeDeletionStatus,
   ]);
   useEffect(() => {
     setapiBody((previousState) => ({
@@ -416,7 +426,29 @@ function DialogComponent({ dialogName, dialogElement }) {
       new_cust_payment_terms:
         editDialogrow.length !== 0 ? editDialogrow[0].cust_payment_terms : "",
     }));
-  }, [editDialogrow]);
+
+    if (isRefreshed) {
+      setapiBody({
+        business_code: "",
+        cust_number: "",
+        clear_date: "",
+        business_year: "",
+        doc_id: "",
+        posting_date: "",
+        document_create_date: "",
+        due_in_date: "",
+        invoice_currency: "",
+        document_type: "",
+        posting_id: "",
+        total_open_amount: "",
+        baseline_create_date: "",
+        cust_payment_terms: "",
+        invoice_id: "",
+        new_invoice_currency: "",
+        new_cust_payment_terms: "",
+      });
+    }
+  }, [editDialogrow,isRefreshed]);
 
   return (
     <div

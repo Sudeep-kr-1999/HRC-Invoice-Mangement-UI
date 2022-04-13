@@ -23,6 +23,15 @@ function ButtonField() {
     changePageNumber,
     changeSearchData,
     changeEditDialogRow,
+    searchCustomerExpression,
+    changeeditButtonDisableStatus,
+    changeDeleteButtonDisableStatus,
+    changepredictButtonDisableStatus,
+    changeCountTotalData,
+    changeDialogBoxPassingData,
+    changeEditStatus,
+    changeAdditionStatus,
+    changeDeletionStatus,
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -36,7 +45,8 @@ function ButtonField() {
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
-    changeCustomerExpression("");
+    searchCustomerExpression["customer_number"] !== "" &&
+      changeCustomerExpression("");
   };
 
   // function for "ADD" button
@@ -73,7 +83,8 @@ function ButtonField() {
     ];
     setdialogElement(dialogElemententry);
     changeDialogDisplay("flex");
-    changeCustomerExpression("");
+    searchCustomerExpression["customer_number"] !== "" &&
+      changeCustomerExpression("");
   };
 
   // function for "EDIT" button
@@ -108,6 +119,18 @@ function ButtonField() {
     changeCustomerExpression("");
     changeSearchData(null);
     changeEditDialogRow([]);
+    changeeditButtonDisableStatus(true);
+    changeDeleteButtonDisableStatus(true);
+    changepredictButtonDisableStatus(true);
+    changeCountTotalData(0);
+    changeDialogBoxPassingData([]);
+    changeSearchData(null);
+    changeCustomerExpression("");
+    changePageNumber(1);
+    changeEditDialogRow([]);
+    changeEditStatus(false);
+    changeAdditionStatus(false);
+    changeDeletionStatus(false);
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">

@@ -17,7 +17,18 @@ function StateProvider({ children }) {
   const [searchCustomerExpression, setsearchCustomerExpression] = useState({
     customer_number: "",
   });
-
+  const [editStatus, seteditStatus] = useState(false);
+  const [additionStatus, setadditionStatus] = useState(false);
+  const [deletionStatus, setdeletionStatus] = useState(false);
+  const changeEditStatus = (newStatus) => {
+    seteditStatus(newStatus);
+  };
+  const changeAdditionStatus = (newStatus) => {
+    setadditionStatus(newStatus);
+  };
+  const changeDeletionStatus = (newStatus) => {
+    setdeletionStatus(newStatus);
+  };
   const changeisRefreshed = (newRefreshStatus) => {
     setisRefreshed(newRefreshStatus);
   };
@@ -49,7 +60,6 @@ function StateProvider({ children }) {
   const changepredictButtonDisableStatus = (newStatus) => {
     setpredictButtonDisableStatus(newStatus);
   };
-
   const changeDialogBoxPassingData = (data) => {
     setdialogBoxPassingData(data);
   };
@@ -78,6 +88,12 @@ function StateProvider({ children }) {
         changeEditDialogRow,
         isRefreshed,
         changeisRefreshed,
+        editStatus,
+        changeEditStatus,
+        additionStatus,
+        changeAdditionStatus,
+        deletionStatus,
+        changeDeletionStatus,
       }}
     >
       {children}
