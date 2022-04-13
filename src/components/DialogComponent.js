@@ -448,12 +448,15 @@ function DialogComponent({ dialogName, dialogElement }) {
         new_cust_payment_terms: "",
       });
     }
-  }, [editDialogrow,isRefreshed]);
+  }, [editDialogrow, isRefreshed]);
 
   return (
     <div
-      className="fixed top-0 left-0 h-screen w-screen items-center justify-center z-10"
-      style={{ display: `${dialogDisplay}` }}
+      className="fixed top-0 left-0 h-screen w-screen items-center justify-center z-50"
+      style={{
+        display: `${dialogDisplay}`,
+        backgroundColor:"rgba(0, 0, 0, 0.6)",
+      }}
     >
       <div className="relative border h-auto w-auto m-10 p-5 flex flex-col rounded-md bg-grid">
         <div className="relative text-white m-5 text-2xl">{dialogName}</div>
