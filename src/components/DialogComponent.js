@@ -44,6 +44,9 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeAdditionStatus,
     changeDeletionStatus,
     isRefreshed,
+    editStatus,
+    additionStatus,
+    deletionStatus,
   } = useContext(DialogDisplayContext);
 
   let actionType = "";
@@ -271,7 +274,7 @@ function DialogComponent({ dialogName, dialogElement }) {
       }
       if (dataAdditionStatus) {
         changeCountTotalData(countTotalData + 1);
-        changeAdditionStatus(true);
+        changeAdditionStatus(additionStatus + 1);
         changeDialogDisplay("none");
         setapiBody((previousState) => ({
           ...previousState,
@@ -304,6 +307,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     checkInvoiceAndDocId,
     changeAdditionStatus,
     countTotalData,
+    additionStatus,
   ]);
 
   const editFunction = useCallback(async () => {
@@ -329,7 +333,7 @@ function DialogComponent({ dialogName, dialogElement }) {
       }
 
       if (dataEditionStatus) {
-        changeEditStatus(true);
+        changeEditStatus(editStatus + 1);
         changeDialogBoxPassingData([]);
         changeDialogDisplay("none");
         changeeditButtonDisableStatus(true);
@@ -364,6 +368,7 @@ function DialogComponent({ dialogName, dialogElement }) {
     changeEditDialogRow,
     searchFunction,
     changeEditStatus,
+    editStatus,
   ]);
 
   const deleteFunction = useCallback(async () => {
@@ -399,7 +404,7 @@ function DialogComponent({ dialogName, dialogElement }) {
       }
       changeCountTotalData(countTotalData - delete_list.length);
       changeDialogBoxPassingData([]);
-      changeDeletionStatus(true);
+      changeDeletionStatus(deletionStatus + 1);
       changeDialogDisplay("none");
       changeeditButtonDisableStatus(true);
       changeDeleteButtonDisableStatus(true);
@@ -417,17 +422,10 @@ function DialogComponent({ dialogName, dialogElement }) {
     countTotalData,
     searchFunction,
     changeDeletionStatus,
+    deletionStatus,
   ]);
   useEffect(() => {
-    setapiBody((previousState) => ({
-      ...previousState,
-      new_invoice_currency:
-        editDialogrow.length !== 0 ? editDialogrow[0].invoice_currency : "",
-      new_cust_payment_terms:
-        editDialogrow.length !== 0 ? editDialogrow[0].cust_payment_terms : "",
-    }));
-
-    if (isRefreshed) {
+    if (isRefreshed > 0) {
       setapiBody({
         business_code: "",
         cust_number: "",
@@ -448,14 +446,21 @@ function DialogComponent({ dialogName, dialogElement }) {
         new_cust_payment_terms: "",
       });
     }
-  }, [editDialogrow, isRefreshed]);
+    setapiBody((previousState) => ({
+      ...previousState,
+      new_invoice_currency:
+        editDialogrow.length !== 0 ? editDialogrow[0].invoice_currency : "",
+      new_cust_payment_terms:
+        editDialogrow.length !== 0 ? editDialogrow[0].cust_payment_terms : "",
+    }));
+  }, [editDialogrow, isRefreshed, editStatus]);
 
   return (
     <div
       className="fixed top-0 left-0 h-screen w-screen items-center justify-center z-50"
       style={{
         display: `${dialogDisplay}`,
-        backgroundColor:"rgba(0, 0, 0, 0.6)",
+        backgroundColor: "rgba(0, 0, 0, 0.75)",
       }}
     >
       <div className="relative border h-auto w-auto m-10 p-5 flex flex-col rounded-md bg-grid">

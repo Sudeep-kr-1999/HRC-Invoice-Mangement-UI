@@ -3,7 +3,7 @@ export const DialogDisplayContext = createContext();
 
 function StateProvider({ children }) {
   const [dialogDisplay, setdialogDisplay] = useState("none");
-  const [isRefreshed, setisRefreshed] = useState(false);
+  const [isRefreshed, setisRefreshed] = useState(0);
   const [editDialogrow, seteditDialogrow] = useState([]);
   const [editButtonDisableStatus, seteditButtonDisableStatus] = useState(true);
   const [deleteButtonDisableStatus, setDeleteButtonDisableStatus] =
@@ -17,9 +17,9 @@ function StateProvider({ children }) {
   const [searchCustomerExpression, setsearchCustomerExpression] = useState({
     customer_number: "",
   });
-  const [editStatus, seteditStatus] = useState(false);
-  const [additionStatus, setadditionStatus] = useState(false);
-  const [deletionStatus, setdeletionStatus] = useState(false);
+  const [editStatus, seteditStatus] = useState(0);
+  const [additionStatus, setadditionStatus] = useState(0);
+  const [deletionStatus, setdeletionStatus] = useState(0);
   const changeEditStatus = (newStatus) => {
     seteditStatus(newStatus);
   };

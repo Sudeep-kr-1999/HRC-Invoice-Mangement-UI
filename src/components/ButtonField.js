@@ -32,6 +32,7 @@ function ButtonField() {
     changeEditStatus,
     changeAdditionStatus,
     changeDeletionStatus,
+    isRefreshed,
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -114,7 +115,7 @@ function ButtonField() {
   };
 
   const refreshFunction = () => {
-    changeisRefreshed(true);
+    changeisRefreshed(isRefreshed + 1);
     changePageNumber(1);
     changeCustomerExpression("");
     changeSearchData(null);
@@ -128,9 +129,9 @@ function ButtonField() {
     changeCustomerExpression("");
     changePageNumber(1);
     changeEditDialogRow([]);
-    changeEditStatus(false);
-    changeAdditionStatus(false);
-    changeDeletionStatus(false);
+    changeEditStatus(0);
+    changeAdditionStatus(0);
+    changeDeletionStatus(0);
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">
