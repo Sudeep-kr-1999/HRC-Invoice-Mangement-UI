@@ -21,10 +21,11 @@ function StateProvider({ children }) {
   const [additionStatus, setadditionStatus] = useState(0);
   const [deletionStatus, setdeletionStatus] = useState(0);
   const [predictRow, setpredictRow] = useState([]);
+
+  
   const changePredictRow = (newpredictrow) => {
     setpredictRow(newpredictrow);
   };
-
   const changeEditStatus = (newStatus) => {
     seteditStatus(newStatus);
   };
@@ -100,7 +101,7 @@ function StateProvider({ children }) {
         deletionStatus,
         changeDeletionStatus,
         predictRow,
-        changePredictRow
+        changePredictRow,
       }}
     >
       {children}
