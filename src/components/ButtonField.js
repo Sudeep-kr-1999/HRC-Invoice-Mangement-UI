@@ -4,7 +4,7 @@ import SearchField from "./SearchField";
 import ButtonComponent from "./ButtonComponent";
 import DialogComponent from "./DialogComponent";
 import { DialogDisplayContext } from "./StateProvider";
-
+import axios from "axios";
 function ButtonField() {
   // state "dialogHeading" for passing to the dialogName props in DialogComponent
   const [dialogHeading, setdialogHeading] = useState("");
@@ -34,7 +34,7 @@ function ButtonField() {
     changeDeletionStatus,
     isRefreshed,
     predictRow,
-    changePredictRow
+    changePredictRow,
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -116,13 +116,74 @@ function ButtonField() {
     changeDialogDisplay("flex");
   };
 
-  const predictFunction = useCallback(async () => {
-    try {
-      // const response=await axios.post('http://127.0.0.1:5000/get_prediction',);
-      console.log(predictRow);
-    } catch (error) {
-      alert("Some error occured");
-    }
+  const predictFunction = useCallback(() => {
+    predictRow.forEach(
+      ({
+        total_open_amount,
+        cust_number,
+        baseline_create_date,
+        business_code,
+        clear_date,
+        business_year,
+        doc_id,
+        name_customer,
+        cust_payment_terms,
+        posting_date,
+        due_in_date,
+        invoice_currency,
+      }) => {
+        if (invoice_currency === "USD") {
+          axios
+            .post("http://127.0.0.1:5000", {
+              converted_usd: total_open_amount,
+              cust_number,
+              baseline_create_date,
+              business_code,
+              clear_date,
+              buisness_year:business_year,
+              doc_id,
+              name_customer,
+              cust_payment_terms,
+              posting_date,
+              due_in_date,
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                console.log(response.data);
+              }
+            })
+            .catch((error) => {
+              alert("Some error occured");
+            });
+        } else if (invoice_currency === "CAD") {
+          const converted_usdValue = (
+            parseInt(invoice_currency) * 0.8
+          ).toString();
+          axios
+            .post("http://127.0.0.1:5000", {
+              converted_usd: converted_usdValue,
+              cust_number,
+              baseline_create_date,
+              business_code,
+              clear_date,
+              buisness_year:business_year,
+              doc_id,
+              name_customer,
+              cust_payment_terms,
+              posting_date,
+              due_in_date,
+            })
+            .then((response) => {
+              if (response.status === 200) {
+                console.log(response.data);
+              }
+            })
+            .catch((error) => {
+              alert("Some error occured");
+            });
+        }
+      }
+    );
   }, [predictRow]);
 
   const refreshFunction = () => {
