@@ -28,6 +28,7 @@ function DataGridComponent() {
     editStatus,
     additionStatus,
     deletionStatus,
+    changePredictRow
   } = useContext(DialogDisplayContext);
   const [displayRows, setdisplayRows] = useState([]);
   // columns for datagrid
@@ -198,6 +199,8 @@ function DataGridComponent() {
   const handleButtonStatus = (item) => {
     let length = item.length;
     changeDialogBoxPassingData(item);
+    const predict = displayRows.filter((row) => item.includes(row.sl_no));
+    changePredictRow(predict);
     if (length > 0) {
       if (length > 1) {
         changepredictButtonDisableStatus(false);

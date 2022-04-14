@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import SearchField from "./SearchField";
 import ButtonComponent from "./ButtonComponent";
@@ -33,6 +33,8 @@ function ButtonField() {
     changeAdditionStatus,
     changeDeletionStatus,
     isRefreshed,
+    predictRow,
+    changePredictRow
   } = useContext(DialogDisplayContext);
 
   // function for "ADVANCE SEARCH" button
@@ -114,6 +116,15 @@ function ButtonField() {
     changeDialogDisplay("flex");
   };
 
+  const predictFunction = useCallback(async () => {
+    try {
+      // const response=await axios.post('http://127.0.0.1:5000/get_prediction',);
+      console.log(predictRow);
+    } catch (error) {
+      alert("Some error occured");
+    }
+  }, [predictRow]);
+
   const refreshFunction = () => {
     changeisRefreshed(isRefreshed + 1);
     changePageNumber(1);
@@ -132,6 +143,7 @@ function ButtonField() {
     changeEditStatus(0);
     changeAdditionStatus(0);
     changeDeletionStatus(0);
+    changePredictRow([]);
   };
   return (
     <div className="relative flex justify-around items-center mt-5 py-10 px-10 bg-grid h-10">
@@ -141,7 +153,11 @@ function ButtonField() {
           fullWidth
           sx={{ position: "relative", display: "flex", flex: "1" }}
         >
-          <ButtonComponent name="PREDICT" state={predictButtonDisableStatus} />
+          <ButtonComponent
+            name="PREDICT"
+            state={predictButtonDisableStatus}
+            workingFunction={predictFunction}
+          />
           <ButtonComponent name="ANALYTICS VIEW" />
           <ButtonComponent
             name="ADVANCE SEARCH"
