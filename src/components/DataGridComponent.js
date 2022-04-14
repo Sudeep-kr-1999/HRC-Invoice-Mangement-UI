@@ -118,6 +118,12 @@ function DataGridComponent() {
       width: 100,
       align: "center",
     },
+    {
+      field: "aging_bucket",
+      headerName: "Aging Bucket",
+      width: 120,
+      align: "center",
+    },
   ];
 
   const getAllUiDetails = useCallback(() => {
