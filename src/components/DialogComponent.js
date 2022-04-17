@@ -425,6 +425,15 @@ function DialogComponent({ dialogName, dialogElement }) {
     deletionStatus,
   ]);
   useEffect(() => {
+    setapiBody((previousState) => ({
+      ...previousState,
+      new_invoice_currency:
+        editDialogrow.length !== 0 ? editDialogrow[0].invoice_currency : "",
+      new_cust_payment_terms:
+        editDialogrow.length !== 0 ? editDialogrow[0].cust_payment_terms : "",
+    }));
+  }, [editDialogrow, editStatus]);
+  useEffect(() => {
     if (isRefreshed > 0) {
       setapiBody({
         business_code: "",
@@ -446,14 +455,7 @@ function DialogComponent({ dialogName, dialogElement }) {
         new_cust_payment_terms: "",
       });
     }
-    setapiBody((previousState) => ({
-      ...previousState,
-      new_invoice_currency:
-        editDialogrow.length !== 0 ? editDialogrow[0].invoice_currency : "",
-      new_cust_payment_terms:
-        editDialogrow.length !== 0 ? editDialogrow[0].cust_payment_terms : "",
-    }));
-  }, [editDialogrow, isRefreshed, editStatus]);
+  }, [isRefreshed]);
 
   return (
     <div
